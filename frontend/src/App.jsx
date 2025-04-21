@@ -15,6 +15,7 @@ import { Loader } from "lucide-react";
 import { Toaster } from "react-hot-toast";
 import Catalog from "./pages/Catalog.jsx";
 import BookPage from "./pages/BookPage.jsx";
+import ExchangePage from "./pages/ExchangePage.jsx";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
@@ -45,6 +46,7 @@ const App = () => {
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
         <Route path="/catalog" element={<Catalog/>} />
+          <Route path='/exchange' element={<ExchangePage />} />
         <Route path="/catalog/:id" element={<BookPage/>} />
       </Routes>
 

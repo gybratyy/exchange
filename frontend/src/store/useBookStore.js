@@ -9,6 +9,7 @@ export const useBookStore = create((set, get) => ({
     book: {},
     similarBooks: [],
     myBooks: [],
+    categories:[],
     isBooksLoading: false,
     isBookLoading: false,
     isCreatingBook: false,
@@ -80,7 +81,7 @@ export const useBookStore = create((set, get) => ({
         });
         set({ similarBooks: filteredBooks });
     },
-    getMyBook: async () => {
+    getMyBooks: async () => {
         set({ isBooksLoading: true });
         try {
             const res = await axiosInstance.get("/books/my-books");
@@ -92,4 +93,16 @@ export const useBookStore = create((set, get) => ({
             set({ isBooksLoading: false });
         }
     },
+    getCategories: async () => {
+        set({ isBooksLoading: true });
+        try {
+            const res = await axiosInstance.get("/books/categories");
+            set({ categories: res.data });
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Failed to fetch books");
+            throw error;
+        } finally {
+            set({ isBooksLoading: false });
+        }
+    }
 }));

@@ -27,7 +27,8 @@ export const BookExtra = () => {
         community:  (<div>community</div>)
     }
     return (
-       <><div className='pt-8 flex flex-wrap gap-4'>
+       <>
+           <div className='pt-8 flex flex-wrap gap-4'>
 
            <button className={`btn btn-outline  rounded-[12px] px-4 ${activeTab==="similarBooks" ? "btn-active" : ""}`} onClick={() => setActiveTab('similarBooks')}>
                Похожие книги
