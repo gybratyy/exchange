@@ -1,9 +1,17 @@
 import express from 'express';
 import { protectRoute } from '../middleware/auth.middleware.js';
-import {getAllBooks, getBookById, createCategory, createBook, updateBook} from '../controllers/book.controller.js';
+import {
+    getAllBooks,
+    getBookById,
+    createCategory,
+    createBook,
+    updateBook,
+    getMyBooks
+} from '../controllers/book.controller.js';
 
 const router = express.Router();
 
+router.get('/my-books', protectRoute, getMyBooks);
 router.get('/', getAllBooks);
 router.get('/:id', getBookById);
 router.post('/create-category', protectRoute, createCategory);

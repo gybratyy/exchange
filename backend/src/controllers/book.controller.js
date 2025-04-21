@@ -107,3 +107,19 @@ export const updateBook = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 }
+
+export const getMyBooks = async (req, res) => {
+    try {
+        const books = await Book.find({ owner: req.user._id });
+        const booksWithCategories = await Promise.all(
+            books.map(async (book) => {
+                const categories = await populateCategories(book);
+                return { ...book._doc, categories };
+            })
+        );
+        res.status(200).json(booksWithCategories);
+    } catch (error) {
+        console.error("Error fetching books:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}

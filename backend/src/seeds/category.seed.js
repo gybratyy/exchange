@@ -5,26 +5,15 @@ import Category from "../models/category.model.js";
 config();
 
 const seedCategories =[
-  {name:"Fiction"},
-  {name:"Non-Fiction"},
-  {name:"Mystery"},
-  {name:"Fantasy"},
-  {name:"Science Fiction"},
-  {name:"Romance"},
-  {name:"Horror"},
-  {name:"Thriller"},
-  {name:"Biography"},
-  {name:"History"},
-  {name:"Self-Help"},
-  {name:"Health & Wellness"},
-  {name:"Travel"},
-  {name:"Philosophy"},
-  {name:"Poetry"},
-  {name:"Young Adult"},
-  {name:"Children's Books"},
-  {name:"Religion & Spirituality"},
-  {name:"Business & Economics"},
-  {name:"Graphic Novels"}
+  {name:"Художественная литература"},
+  {name:"Военная проза"},
+  {name:"Историческая проза"},
+  {name:"Проза XX века"},
+  {name:"Зарубежная литература"},
+  {name:"Романтика"},
+  {name:"Нобелевская премия"},
+  {name:"Рассказы"},
+  {name:"Философия"},
 ]
 
 
