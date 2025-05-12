@@ -16,6 +16,9 @@ import { Toaster } from "react-hot-toast";
 import Catalog from "./pages/Catalog.jsx";
 import BookPage from "./pages/BookPage.jsx";
 import ExchangePage from "./pages/ExchangePage.jsx";
+import {LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import {Field} from "formik";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
@@ -38,17 +41,19 @@ const App = () => {
   return (
     <div data-theme={theme}>
       <Navbar />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <Routes>
+            <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/catalog" />} />
+            <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/" />} />
+            <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
+            <Route path="/catalog" element={<Catalog/>} />
+            <Route path='/exchange' element={<ExchangePage />} />
+            <Route path="/catalog/:id" element={<BookPage/>} />
+        </Routes>
+        </LocalizationProvider>
 
-      <Routes>
-        <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/catalog" />} />
-        <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/" />} />
-        <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
-        <Route path="/catalog" element={<Catalog/>} />
-          <Route path='/exchange' element={<ExchangePage />} />
-        <Route path="/catalog/:id" element={<BookPage/>} />
-      </Routes>
 
       <Toaster />
     </div>

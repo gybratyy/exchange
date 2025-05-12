@@ -104,5 +104,6 @@ export const useBookStore = create((set, get) => ({
         } finally {
             set({ isBooksLoading: false });
         }
-    }
+    },
+    resetBook: () => set({ book: {} }),
 }));

@@ -64,15 +64,21 @@ export const createCategory = async (req, res) => {
 export const createBook = async (req, res) =>{
     const {title, description, author, publishedDate, language, categories, image, type, price} = req.body;
     const owner = req.user._id;
-    console.log(req.user._id)
     try {
+
+        const allCategories = await Category.find();
+
+        const categoryIds = categories.map((categoryName) => {
+            const category = allCategories.find((cat) => cat.name === categoryName);
+            return category ? category._id : null;
+        }).filter((id) => id !== null);
         const newBook = new Book({
             title,
             description,
             author,
             publishedDate,
             language,
-            categories,
+            categories: categoryIds,
             image,
             owner,
             type,

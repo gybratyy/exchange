@@ -1,6 +1,8 @@
 import {Link} from 'react-router-dom'
+import {Button} from "@mui/material";
+import {useBookStore} from "../store/useBookStore.js";
 
-export const BookCardWithMarks = ({book}) => {
+export const BookCardWithMarks = ({book, openModal}) => {
     const {image, author, title, _id, type} = book;
     const badgeStyles = {
         forSale: 'bg-green-500',
@@ -8,16 +10,23 @@ export const BookCardWithMarks = ({book}) => {
         any: 'bg-yellow-500',
         forFree: 'bg-red-500',
     }
+    const {getBookById} = useBookStore();
+
+    const handleClick = () => {
+        getBookById(_id);
+        openModal();
+    }
     return (
-        <Link to={`/catalog/${_id}`}>
+
             <div className='w-[230px]'>
                 <div className={'flex justify-end pe-4 '}> <div className={`rounded-t-lg text-white w-[35%] flex justify-center ${badgeStyles[type]}`}><span>{type}</span></div>  </div>
 
                 <img src={image[0]} className={'rounded-xl mb-2 w-[230px] h-[320px] object-fill'}/>
                 <p className={'text-[#707070]'}>{author}</p>
-                <h2 className={'font-bold'}>{title}</h2>
+                <Link to={`/catalog/${_id}`}><h2 className={'font-bold hover:underline'}>{title}</h2></Link>
+                <Button onClick={handleClick}>Edit</Button>
             </div>
-        </Link>
+
 
 
     )

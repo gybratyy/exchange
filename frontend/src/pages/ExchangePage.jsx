@@ -2,10 +2,11 @@ import {PlusIcon, LayoutGridIcon, LayoutListIcon, MinusIcon} from "lucide-react"
 import {useEffect, useState} from "react";
 import {useBookStore} from "../store/useBookStore.js";
 import {BookCardWithMarks} from "../components/BookCardWithMarks.jsx";
+import {BookForm} from "../components/BookForm.jsx";
 
 const ExchangePage = () => {
     const [activeTab, setActiveTab] = useState('myBooks')
-    const {myBooks, getMyBooks, categories, getCategories} = useBookStore()
+    const {myBooks, getMyBooks, resetBook, getCategories} = useBookStore()
     const [isModalOpen, setIsModalOpen] = useState(false);
 
 
@@ -15,11 +16,17 @@ const ExchangePage = () => {
 
     const closeModal = () => {
         setIsModalOpen(false);
+        resetBook();
     };
     useEffect(() => {
-        getMyBooks()
-        getCategories()
+        getMyBooks(), getCategories()
     }, [getMyBooks, getCategories]);
+
+
+    function handleCreateBook() {
+        resetBook();
+        openModal();
+    }
 
     const TABS = {
         myBooks: (
@@ -27,7 +34,7 @@ const ExchangePage = () => {
                 {
                     myBooks.map((book) => {
                         return (
-                            <BookCardWithMarks key={book._id} book={book}/>
+                            <BookCardWithMarks key={book._id} book={book} openModal={openModal} />
                         )
                     })
                 }
@@ -47,7 +54,7 @@ const ExchangePage = () => {
                         <LayoutListIcon/>
                     </button>
                     <button className="btn rounded-[20px] px-3 ">
-                        <PlusIcon onClick={openModal}/>
+                        <PlusIcon onClick={handleCreateBook}/>
                     </button>
 
                 </div>
@@ -99,49 +106,7 @@ const ExchangePage = () => {
                             </button>
                         </div>
 
-                        <div className={'grid grid-cols-2 w-full gap-8'}>
-                            <fieldset className="fieldset w-full">
-                                <legend className="fieldset-legend ">Title</legend>
-                                <input type={'text'} className={'input w-full'} />
-                            </fieldset>
-                            <fieldset className="fieldset w-full">
-                                <legend className="fieldset-legend ">Author</legend>
-                                <input type={'text'} className={'input w-full'} />
-                            </fieldset>
-                            <fieldset className="fieldset w-full col-span-2 ">
-                                <legend className="fieldset-legend ">Description</legend>
-                                <textarea rows={2} className={'textarea w-full'} />
-                            </fieldset>
-
-                            <fieldset className="fieldset  w-full">
-                                <legend className="fieldset-legend ">Publication Date</legend>
-                                <input type="date" className="input w-full" />
-                            </fieldset><fieldset className="fieldset  w-full">
-                                <legend className="fieldset-legend ">Language</legend>
-                                <select defaultValue="Pick a browser" className="select w-full ">
-                                        <option>Қазақша</option>
-                                        <option>English</option>
-                                        <option>Русский</option>
-                                </select>
-                            </fieldset>
-                            <fieldset className="fieldset  w-full">
-                                <legend className="fieldset-legend">Type</legend>
-                                <select defaultValue="Pick a browser" className="select w-full ">
-                                    <option>For sale</option>
-                                    <option>For exchange</option>
-                                    <option>Any</option>
-                                    <option>For free</option>
-                                </select>
-                            </fieldset>
-                            <fieldset className="fieldset w-full">
-                                <legend className="fieldset-legend ">Price</legend>
-                                <input type={'number'} className={'input w-full'} />
-                            </fieldset>
-                            <fieldset className="fieldset w-full">
-                                <legend className="fieldset-legend ">Image</legend>
-                                <input type={'file'} className={'file-input w-full'} />
-                            </fieldset>
-                        </div>
+                        <BookForm/>
                     </div>
                 </div>
             )}
@@ -150,16 +115,5 @@ const ExchangePage = () => {
     )
 }
 
-const Modal = () => {
-    <dialog id="my_modal_2" className="modal">
-        <div className="modal-box">
-            <h3 className="font-bold text-lg">Hello!</h3>
-            <p className="py-4">Press ESC key or click outside to close</p>
-        </div>
-        <form method="dialog" className="modal-backdrop">
-            <button>close</button>
-        </form>
-    </dialog>
-}
 
 export default ExchangePage;
