@@ -30,11 +30,11 @@ const ExchangePage = () => {
 
     const TABS = {
         myBooks: (
-            <section className={'grid grid-cols-4 gap-6 pt-4 mx-auto'}>
+            <section className={'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4 mx-auto'}>
                 {
                     myBooks.map((book) => {
                         return (
-                            <BookCardWithMarks key={book._id} book={book} openModal={openModal} />
+                            <BookCardWithMarks key={book._id} book={book} openModal={openModal}/>
                         )
                     })
                 }
@@ -94,7 +94,7 @@ const ExchangePage = () => {
                     <div className="fixed inset-0 bg-black opacity-50"></div>
                     <div
                         className="relative bg-white p-6 rounded-lg shadow-lg z-50 w-[800px] h-[850px] flex flex-col items-center px-10"
-                        onClick={(e) => e.stopPropagation()} // Prevent clicks inside the modal from closing it
+                        onClick={(e) => e.stopPropagation()}
                     >
                         <div className="flex w-full justify-between items-center mb-4">
                             <h2 className="text-xl font-bold">Создать пост</h2>
@@ -106,7 +106,7 @@ const ExchangePage = () => {
                             </button>
                         </div>
 
-                        <BookForm/>
+                        <BookForm closeModal={closeModal}/>
                     </div>
                 </div>
             )}

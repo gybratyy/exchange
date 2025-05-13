@@ -9,6 +9,17 @@ function populateCategories(book) {
     }));
 }
 
+async function categoriesToIds(categories) {
+    const allCategories = await Category.find();
+
+    const categoryIds = categories.map((categoryName) => {
+        const category = allCategories.find((cat) => cat.name === categoryName);
+        return category ? category._id : null;
+    }).filter((id) => id !== null);
+
+    return categoryIds;
+}
+
 export const getAllBooks = async (req, res) => {
     try {
         const books = await Book.find();
@@ -29,19 +40,12 @@ export const getBookById = async (req, res) => {
     const { id: bookId} = req.params;
     try {
         const book = await Book.findById(bookId);
-        console.log(book)
         if (!book) {
             return res.status(404).json({ message: "Book not found" });
         }
 
-        //find each category by id and populate the category field
-
         const categories = await populateCategories(book);
-        console.log("categories:",categories);
-
-        //return the book with populated categories
         res.status(200).json({ ...book._doc, categories:categories });
-
 
     } catch(error){
 
@@ -65,13 +69,7 @@ export const createBook = async (req, res) =>{
     const {title, description, author, publishedDate, language, categories, image, type, price} = req.body;
     const owner = req.user._id;
     try {
-
-        const allCategories = await Category.find();
-
-        const categoryIds = categories.map((categoryName) => {
-            const category = allCategories.find((cat) => cat.name === categoryName);
-            return category ? category._id : null;
-        }).filter((id) => id !== null);
+        const categoryIds =  await categoriesToIds(categories);
         const newBook = new Book({
             title,
             description,
@@ -97,9 +95,21 @@ export const updateBook = async (req, res) => {
     const { title, description, author, publishedDate, language, categories, image, type, price } = req.body;
 
     try {
+        const categoryIds = await categoriesToIds(categories);
+
+        console.log(categoryIds)
         const updatedBook = await Book.findByIdAndUpdate(
             bookId,
-            { title, description, author, publishedDate, language, categories, image, type, price },
+            { title,
+                description,
+                author,
+                publishedDate,
+                language,
+                categories: categoryIds,
+                image,
+                type,
+                price
+            },
             { new: true }
         );
 
