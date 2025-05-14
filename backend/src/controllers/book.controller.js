@@ -83,7 +83,7 @@ export const createBook = async (req, res) =>{
             publishedDate,
             language,
             categories: categoryIds,
-            image,
+            image: await imageToCloudUrl(image),
             owner,
             type,
             price
