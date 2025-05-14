@@ -10,7 +10,7 @@ const Catalog = () => {
         getBooks()
     }, [getBooks]);
     return (
-        <section className={'grid grid-cols-6 gap-6 pt-20 w-[80%]  mx-auto'}>
+        <section className={'grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 pt-20 w-[80%] mx-auto'}>
             {
                 books.map((book) => {
                     return (

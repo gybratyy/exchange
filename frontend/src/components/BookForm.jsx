@@ -1,10 +1,10 @@
 import {Formik, Form} from "formik";
 import {useBookStore} from "../store/useBookStore.js";
-import {Autocomplete, Button, Input, TextareaAutosize, TextField} from "@mui/material";
+import {Autocomplete, Button, TextareaAutosize, TextField} from "@mui/material";
 import {DatePicker} from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import {CloudUploadIcon} from "lucide-react";
 import {useCallback} from "react";
+import {ImageInput} from "./ImageInput.jsx";
 
 export const BookForm = ({closeModal}) => {
     const {book, categories, createBook, updateBook} = useBookStore()
@@ -24,9 +24,8 @@ export const BookForm = ({closeModal}) => {
             } else {
                 await createBook(values);
             }
-            closeModal(); // Close the modal after successful submission
+            closeModal();
         } catch (error) {
-            // Handle error (e.g., display an error message)
             console.error("Error submitting book form:", error);
         }
     }, [createBook, updateBook, book, closeModal]);
@@ -41,7 +40,7 @@ export const BookForm = ({closeModal}) => {
             description: book.description || '',
             language: book.language || '',
             price: book.price || '',
-            image: book.image || [],
+            image: book.image || '',
             type: book.type || '',
             categories: book.categories || [],
         } : {
@@ -51,14 +50,14 @@ export const BookForm = ({closeModal}) => {
             language: '',
             publishedDate: null,
             price: '',
-            image: [],
+            image: '',
             type: '',
             categories: [],
         }}
         onSubmit={handleSubmit}
     >
         {({values, handleChange, handleBlur, handleSubmit, setFieldValue}) => (<Form onSubmit={handleSubmit}>
-            <div className='grid grid-cols-2 gap-x-5 gap-y-8'>
+            <div className='grid grid-cols-2 gap-x-5 gap-y-8 overflow-y-auto'>
                 <TextField value={values.title} onChange={handleChange} onBlur={handleBlur}
                            label="Title" name='title' fullWidth/>
                 <TextField value={values.author} onChange={handleChange} onBlur={handleBlur}
@@ -87,28 +86,7 @@ export const BookForm = ({closeModal}) => {
                 />
                 <TextField value={values.price} onChange={handleChange} onBlur={handleBlur} label="Price"
                            variant="outlined" type='number' name='price' fullWidth/>
-                <Button
-                    component="label"
-                    role={undefined}
-                    variant="contained"
-                    tabIndex={-1}
-                    startIcon={<CloudUploadIcon/>}
-                >
-                    Upload images
-                    <Input
-                        type="file"
-                        onChange={(event) => {
-                            const files = event.target.files;
-                            const fileArray = Array.from(files);
-                            // Handle multiple images
-                            setFieldValue('image', [...values.image, ...fileArray.map(file => URL.createObjectURL(file))]);
-                        }}
-                        accept="image/*"
-                        multiple={true}
-                        className='hidden'
-                        name="image"
-                    />
-                </Button>
+              <ImageInput />
 
                 <Autocomplete
                     renderInput={(params) => <TextField {...params} label="Type"/>}

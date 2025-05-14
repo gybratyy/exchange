@@ -6,7 +6,7 @@ import {BookForm} from "../components/BookForm.jsx";
 
 const ExchangePage = () => {
     const [activeTab, setActiveTab] = useState('myBooks')
-    const {myBooks, getMyBooks, resetBook, getCategories} = useBookStore()
+    const {myBooks, getMyBooks, resetBook, getCategories, books} = useBookStore()
     const [isModalOpen, setIsModalOpen] = useState(false);
 
 
@@ -19,8 +19,9 @@ const ExchangePage = () => {
         resetBook();
     };
     useEffect(() => {
-        getMyBooks(), getCategories()
-    }, [getMyBooks, getCategories]);
+        getMyBooks()
+        getCategories()
+    }, [getMyBooks, getCategories, books]);
 
 
     function handleCreateBook() {

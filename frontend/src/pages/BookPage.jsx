@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useBookStore } from "../store/useBookStore.js";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import { ArrowDownUpIcon, HeartIcon, EllipsisIcon} from "lucide-react";
 import {BookExtra} from "../components/BookExtra.jsx";
 
@@ -10,9 +10,8 @@ const BookPage = () => {
 
     useEffect(() => {
         getBookById(id)
-    }, [getBookById, id]);
+    }, [getBookById, id, books]);
 
-    console.log(book)
     return (
         <section className={'flex flex-col items-center max-w-[80%] justify-center pt-20 px-4 mx-auto'}>
             <div className='w-full grid grid-cols-12 gap-10 '>

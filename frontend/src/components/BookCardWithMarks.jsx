@@ -21,7 +21,7 @@ export const BookCardWithMarks = ({book, openModal}) => {
             <div className='w-[230px]'>
                 <div className={'flex justify-end pe-4 '}> <div className={`rounded-t-lg text-white w-[35%] flex justify-center ${badgeStyles[type]}`}><span>{type}</span></div>  </div>
 
-                <img src={image[0]} className={'rounded-xl mb-2 w-[230px] h-[320px] object-fill'}/>
+                <img src={image} alt={title} className={'rounded-xl mb-2 w-[230px] h-[320px] object-fill'}/>
                 <p className={'text-[#707070]'}>{author}</p>
                 <Link to={`/catalog/${_id}`}><h2 className={'font-bold hover:underline'}>{title}</h2></Link>
                 <Button onClick={handleClick}>Edit</Button>

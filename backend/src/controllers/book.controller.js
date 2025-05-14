@@ -1,5 +1,6 @@
 import Book from "../models/book.model.js";
 import Category from "../models/category.model.js";
+import cloudinary from "../lib/cloudinary.js";
 
 
 function populateCategories(book) {
@@ -18,6 +19,11 @@ async function categoriesToIds(categories) {
     }).filter((id) => id !== null);
 
     return categoryIds;
+}
+
+async function imageToCloudUrl(image){
+    const uploadResponse = await cloudinary.uploader.upload(image);
+    return uploadResponse.secure_url;
 }
 
 export const getAllBooks = async (req, res) => {
@@ -94,10 +100,10 @@ export const updateBook = async (req, res) => {
     const { id: bookId } = req.params;
     const { title, description, author, publishedDate, language, categories, image, type, price } = req.body;
 
+
+
     try {
         const categoryIds = await categoriesToIds(categories);
-
-        console.log(categoryIds)
         const updatedBook = await Book.findByIdAndUpdate(
             bookId,
             { title,
@@ -106,7 +112,7 @@ export const updateBook = async (req, res) => {
                 publishedDate,
                 language,
                 categories: categoryIds,
-                image,
+                image: await imageToCloudUrl(image),
                 type,
                 price
             },

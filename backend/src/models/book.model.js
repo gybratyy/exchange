@@ -27,7 +27,7 @@ const bookSchema = new mongoose.Schema({
         required: false,
     },
     image:{
-        type: [String],
+        type: String,
         required: true
     },
     owner:{
