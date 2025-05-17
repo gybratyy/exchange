@@ -13,12 +13,15 @@ export const useAuthStore = create((set, get) => ({
   isCheckingAuth: true,
   onlineUsers: [],
   socket: null,
+  preferences:{},
+  isFillingPreferences: false,
 
   checkAuth: async () => {
     try {
       const res = await axiosInstance.get("/auth/check");
 
       set({ authUser: res.data });
+      set({ preferences: res.data.preferences });
       get().connectSocket();
     } catch (error) {
       console.log("Error in checkAuth:", error);
@@ -47,6 +50,7 @@ export const useAuthStore = create((set, get) => ({
     try {
       const res = await axiosInstance.post("/auth/login", data);
       set({ authUser: res.data });
+      set({preferences: res.data.preferences});
       toast.success("Logged in successfully");
 
       get().connectSocket();
@@ -81,6 +85,20 @@ export const useAuthStore = create((set, get) => ({
       set({ isUpdatingProfile: false });
     }
   },
+
+  fillPreferences: async (data) => {
+    set({ isFillingPreferences: true });
+    try {
+      const res = await axiosInstance.post("/auth/update-preferences", data);
+      set({ preferences: res.data.user.preferences });
+    } catch (error) {
+        console.log("Error in filling preferences:", error);
+        toast.error(error.response.data.message);
+    } finally {
+        set({ isFillingPreferences: false });
+        toast.success("Preferences updated successfully");
+    }
+    },
 
   connectSocket: () => {
     const { authUser } = get();

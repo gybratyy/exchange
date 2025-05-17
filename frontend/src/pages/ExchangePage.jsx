@@ -31,7 +31,7 @@ const ExchangePage = () => {
 
     const TABS = {
         myBooks: (
-            <section className={'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4 mx-auto'}>
+            <section className={'grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pt-4 mx-auto'}>
                 {
                     myBooks.map((book) => {
                         return (
@@ -81,7 +81,7 @@ const ExchangePage = () => {
                     </div>
 
                 </div>
-                <div className='col-span-8'>
+                <div className='col-span-9'>
                     {TABS[activeTab]}
                 </div>
             </div>

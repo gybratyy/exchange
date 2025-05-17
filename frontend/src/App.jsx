@@ -19,6 +19,7 @@ import ExchangePage from "./pages/ExchangePage.jsx";
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {Field} from "formik";
+import Preferences from "./pages/Preferences.jsx";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
@@ -51,6 +52,7 @@ const App = () => {
             <Route path="/catalog" element={<Catalog/>} />
             <Route path='/exchange' element={<ExchangePage />} />
             <Route path="/catalog/:id" element={<BookPage/>} />
+            <Route path="/preferences" element={<Preferences/>}/>
         </Routes>
         </LocalizationProvider>
 

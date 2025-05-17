@@ -6,7 +6,7 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [daisyui],
+  plugins: [daisyui, '@tailwindcss/aspect-ratio'],
   daisyui: {
     themes: [
       "nord",
