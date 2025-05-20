@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 
 export const useBookStore = create((set, get) => ({
     books: [],
+    recents:[],
+
     book: {},
     similarBooks: [],
     myBooks: [],

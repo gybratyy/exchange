@@ -50,9 +50,9 @@ const App = () => {
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
             <Route path="/catalog" element={<Catalog/>} />
-            <Route path='/exchange' element={<ExchangePage />} />
+            <Route path='/exchange' element={authUser ? <ExchangePage /> : <Navigate to="/login" />} />
             <Route path="/catalog/:id" element={<BookPage/>} />
-            <Route path="/preferences" element={<Preferences/>}/>
+            <Route path="/preferences" element={authUser ? <Preferences /> : <Navigate to="/login" />}/>
         </Routes>
         </LocalizationProvider>
 

@@ -1,15 +1,21 @@
 import {BookCard} from "../components/BookCard.jsx";
 import {useBookStore} from "../store/useBookStore.js";
 import {useEffect} from "react";
-import {CircleMinus, CirclePlus, Loader2} from "lucide-react";
+import {CircleMinus, CirclePlus, Loader, Loader2} from "lucide-react";
 
 
 const Catalog = () => {
-    const {books, getBooks} = useBookStore();
+    const {books, getBooks, isBookLoading} = useBookStore();
 
     useEffect(() => {
         getBooks()
     }, [getBooks]);
+    if (isBookLoading)
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <Loader className="size-10 animate-spin" />
+            </div>
+        );
     return (
 
     <div className="min-h-screen flex flex-col justify-center items-center p-6 sm:p-12">

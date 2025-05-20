@@ -5,14 +5,15 @@ import {CirclePlus, CircleMinus, Loader2} from "lucide-react";
 
 const Preferences = () => {
 
-    const {preferences, fillPreferences, isFillingPreferences} = useAuthStore();
+    const {preferences, fillPreferences, isFillingPreferences, checkAuth} = useAuthStore();
     const {getCategories, categories} = useBookStore()
     const [prefs, setPrefs] = useState(preferences ? Object.keys(preferences) : []);
 
 
     useEffect(() => {
         getCategories();
-    }, [getCategories]);
+        checkAuth();
+    }, [getCategories, checkAuth]);
 
     function changePrefs(id) {
         if (prefs.includes(id)) {
