@@ -11,6 +11,7 @@ import { connectDB } from "./lib/db.js";
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
 import bookRoutes from "./routes/book.route.js";
+import userRoutes from "./routes/user.route.js"
 import { app, server } from "./lib/socket.js";
 
 dotenv.config();
@@ -30,6 +31,7 @@ app.use(
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/books", bookRoutes)
+app.use("/api/user", userRoutes)
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
