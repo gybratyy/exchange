@@ -29,6 +29,16 @@ const userSchema = new mongoose.Schema(
         type: String,
         default: "",
       },
+      country:{
+        type: String,
+        default: "Kazakhstan",
+          required: true,
+      },
+        city:{
+            type: String,
+            default: "Astana",
+            required: true,
+        },
   },
   { timestamps: true }
 );
