@@ -5,7 +5,7 @@ import cloudinary from "../lib/cloudinary.js";
 import Category from "../models/category.model.js";
 
 export const signup = async (req, res) => {
-    const {fullName, email, password} = req.body;
+    const {fullName, email, password, telegramId} = req.body;
     try {
         if (!fullName || !email || !password) {
             return res.status(400).json({message: "All fields are required"});
@@ -26,6 +26,7 @@ export const signup = async (req, res) => {
             fullName,
             email,
             password: hashedPassword,
+            telegramId,
         });
 
         if (newUser) {
@@ -38,6 +39,8 @@ export const signup = async (req, res) => {
                 fullName: newUser.fullName,
                 email: newUser.email,
                 profilePic: newUser.profilePic,
+                preferences: newUser.preferences,
+                telegramId: newUser.telegramId,
             });
         } else {
             res.status(400).json({message: "Invalid user data"});
@@ -70,6 +73,7 @@ export const login = async (req, res) => {
             email: user.email,
             profilePic: user.profilePic,
             preferences: user.preferences,
+            telegramId: user.telegramId,
         });
     } catch (error) {
         console.log("Error in login controller", error.message);
