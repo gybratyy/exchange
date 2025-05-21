@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Loader2, Lock, Mail, User, ArrowLeft, Send, MapPin, Globe } from "lucide-react";
 import toast from "react-hot-toast";
 
-// Stepper Component (Optional but recommended for better UX)
+
 const Stepper = ({ currentStep }) => {
   const steps = ["Registration", "Select your favourite genre", "Select your location"];
   return (
@@ -28,10 +28,10 @@ const SignUpPage = () => {
     fullName: "",
     email: "",
     password: "",
-    telegramId: "", // Optional
-    preferences: [], // Array of category IDs
-    country: "Kazakhstan", // Default
-    city: "Astana",     // Default
+    telegramId: "",
+    preferences: [],
+    country: "Kazakhstan",
+    city: "Astana",
   });
 
   const { signup, isSigningUp } = useAuthStore();
@@ -103,10 +103,8 @@ const SignUpPage = () => {
 
     try {
       await signup(formData);
-      // No need to navigate to /preferences as it's part of signup now
-      navigate("/"); // Navigate to home or dashboard after successful signup
+      navigate("/");
     } catch (error) {
-      // Error is already handled by toast in useAuthStore
       console.error("Signup failed:", error);
     }
   };

@@ -18,8 +18,8 @@ import BookPage from "./pages/BookPage.jsx";
 import ExchangePage from "./pages/ExchangePage.jsx";
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import {Field} from "formik";
 import Preferences from "./pages/Preferences.jsx";
+import Chat from "./pages/Chat.jsx";
 import Setup from "./pages/Setup.jsx";
 
 const App = () => {
@@ -55,6 +55,7 @@ const App = () => {
             <Route path="/catalog/:id" element={<BookPage/>} />
             <Route path="/preferences" element={authUser ? <Preferences /> : <Navigate to="/login" />}/>
             <Route path='/setup' element={<Setup/>}/>
+            <Route path='/chat' element={<Chat/>}/>
         </Routes>
         </LocalizationProvider>
 
