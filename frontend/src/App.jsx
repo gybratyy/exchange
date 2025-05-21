@@ -20,6 +20,7 @@ import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {Field} from "formik";
 import Preferences from "./pages/Preferences.jsx";
+import Setup from "./pages/Setup.jsx";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
@@ -44,7 +45,7 @@ const App = () => {
       <Navbar />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Routes>
-            <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/catalog" />} />
+            <Route path="/" element={<HomePage /> } />
             <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/" />} />
             <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
             <Route path="/settings" element={<SettingsPage />} />
@@ -53,6 +54,7 @@ const App = () => {
             <Route path='/exchange' element={authUser ? <ExchangePage /> : <Navigate to="/login" />} />
             <Route path="/catalog/:id" element={<BookPage/>} />
             <Route path="/preferences" element={authUser ? <Preferences /> : <Navigate to="/login" />}/>
+            <Route path='/setup' element={<Setup/>}/>
         </Routes>
         </LocalizationProvider>
 

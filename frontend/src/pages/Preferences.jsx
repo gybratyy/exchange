@@ -2,13 +2,14 @@ import {useEffect, useState} from "react";
 import {useAuthStore} from "../store/useAuthStore.js";
 import {useBookStore} from "../store/useBookStore.js";
 import {CirclePlus, CircleMinus, Loader2} from "lucide-react";
+import {useNavigate} from "react-router-dom";
 
 const Preferences = () => {
 
     const {preferences, fillPreferences, isFillingPreferences, checkAuth} = useAuthStore();
     const {getCategories, categories} = useBookStore()
     const [prefs, setPrefs] = useState(preferences ? Object.keys(preferences) : []);
-
+    const navigate = useNavigate();
 
     useEffect(() => {
         getCategories();
@@ -64,7 +65,7 @@ const Preferences = () => {
 
                         ))
                     }</div>
-                    <button onClick={()=>submitPreferences()} className='btn btn-accent btn-wide rounded-xl '>  {isFillingPreferences ? (
+                    <button onClick={()=>submitPreferences().then(navigate('/catalog'))} className='btn btn-accent btn-wide rounded-xl '>  {isFillingPreferences ? (
                         <>
                             <Loader2 className="size-5 animate-spin" />
                             Loading...

@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 export const useBookStore = create((set, get) => ({
     books: [],
     recents:[],
-
     book: {},
     similarBooks: [],
     myBooks: [],
@@ -35,6 +34,7 @@ export const useBookStore = create((set, get) => ({
         try {
             const res = await axiosInstance.get("/books/");
             set({books: res.data});
+            await get().getCategories();
         } catch (error) {
             toast.error(error.response?.data?.message || "Failed to fetch books");
             throw error;
