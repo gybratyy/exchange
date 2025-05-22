@@ -13,8 +13,7 @@ const Navbar = () => {
                 <div className="flex items-center justify-between h-full">
                     <div className="flex items-center gap-8">
                         <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-all">
-                            <img src='/logo.svg'/>
-
+                            <img src='/logo.svg' className='max-w-[120px]'/>
                         </Link>
                     </div>
                     <div className="flex items-center gap-2">
