@@ -8,5 +8,6 @@
     "start": "npm run start --prefix backend"
   },
   "keywords": [],
-  "author": "gybratyy"
+  "author": "gybratyy",
+  "collaborators": "Aruzhan Kuanova, Gibrat Yerzhan, Margulan Temirgali"
 }
