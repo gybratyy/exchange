@@ -1,10 +1,10 @@
 import {Star} from "lucide-react";
 
-export const CarouselItem = ({ book, isActive }) => {
+export const CarouselItem = ({ book, isActive, key }) => {
     if (!book) return null;
 
     return (
-        <div
+        <div key={key}
             className={`transition-opacity duration-700 ease-in-out ${isActive ? 'opacity-100' : 'opacity-0 absolute'
             } w-full `}
         >

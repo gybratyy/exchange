@@ -91,7 +91,6 @@ const Dropdown = ({ options, selected, onChange, placeholder }) => (
     </select>
 );
 
-// Price Range Slider (Conceptual - actual slider might need a library or more complex CSS)
 const PriceRange = ({ min, max, onMinChange, onMaxChange, currentMin, currentMax }) => (
     <div>
         <div className="flex justify-between items-center mb-1">
@@ -345,7 +344,7 @@ const ProductCard = ({ product }) => {
 };
 
 
-// Product Grid component
+
 const ProductGrid = ({ products }) => {
     if (products.length === 0) {
         return <div className="text-center text-slate-500 py-10 col-span-full">Нет товаров, соответствующих вашим фильтрам.</div>;
@@ -365,7 +364,7 @@ export default function Catalog() {
         productTypes: [],
         languages: [],
         types: [],
-        sellerRating: 0, // 0 for 'Any'
+        sellerRating: 0,
         country: '',
         city: '',
         priceRange: { min: 0, max: 100000 },

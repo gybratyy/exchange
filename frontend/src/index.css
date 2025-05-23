@@ -5,4 +5,5 @@
 html{
     overflow-y:visible;
     scrollbar-width: none !important;
+    font-family: 'Golos-Text', sans-serif;
 }

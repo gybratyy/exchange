@@ -5,7 +5,7 @@ import cloudinary from "../lib/cloudinary.js";
 import Category from "../models/category.model.js";
 
 export const signup = async (req, res) => {
-    const {fullName, email, password, telegramId, country, city} = req.body;
+    const {fullName, email, password, telegramId, country, city, preferences} = req.body;
     try {
         if (!fullName || !email || !password) {
             return res.status(400).json({message: "All fields are required"});
@@ -28,7 +28,8 @@ export const signup = async (req, res) => {
             password: hashedPassword,
             telegramId,
             country,
-            city
+            city,
+            preferences
         });
 
         if (newUser) {

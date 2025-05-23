@@ -20,7 +20,7 @@ const Catalog = () => {
     );
   return (
 
-      <div className="min-h-screen flex flex-col gap-8 items-center p-6 sm:p-12">
+      <div className="min-h-screen flex flex-col gap-8 items-center ">
         <RecommendationSection/>
         <RecentBooksSection/>
         <CatalogCTASection/>

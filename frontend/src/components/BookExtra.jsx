@@ -1,17 +1,26 @@
 import {useBookStore} from "../store/useBookStore.js";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {BookCard} from "./BookCard.jsx";
+import {useParams} from "react-router-dom";
+import {StaticStarRating} from "./StaticStarRating.jsx";
 
 
 
 
 export const BookExtra = () => {
-    const {similarBooks} = useBookStore()
+    const {similarBooks, books,book, getBookById } = useBookStore()
+
+    const { id } = useParams();
+
+    useEffect(() => {
+        getBookById(id)
+    }, [getBookById, id, books]);
+
 
     const [activeTab, setActiveTab] = useState('similarBooks')
     const TABS = {
         similarBooks: (
-            <section className={'grid grid-cols-4 gap-6 pt-4 mx-auto'}>
+            <section className={'grid grid-cols-8 gap-6 pt-4 mx-auto'}>
                 {
                     similarBooks.map((book) => {
                         return (
@@ -20,10 +29,32 @@ export const BookExtra = () => {
                     })
 
                 }
-                similarBooks
             </section>
         ),
-        reviews: (<div>reviews</div>),
+        reviews: (<section>
+
+
+            {
+                book?.reviews?.map((review) => {
+                    return (
+                        <>
+
+                            <div key={review.reviewerid} className={'flex gap-4 pt-4'}>
+                            <img src={review.profilePic || 'https://www.w3schools.com/howto/img_avatar.png'} alt="profile" className={'rounded-full w-[50px] h-[50px]'}/>
+                            <div>
+                                <p className={'text-[#707070] text-xl'}>{review.fullName}</p>
+                                <p className={'text-black text-base text-justify'}>{review.text}</p>
+                            </div>
+                                <StaticStarRating rating={review.rating} maxStars={5} />
+                        </div>
+                        </>
+
+                    )
+                })
+            }
+
+
+        </section>),
         community:  (<div>community</div>)
     }
     return (
