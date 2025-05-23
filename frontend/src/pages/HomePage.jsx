@@ -4,7 +4,7 @@ import { Loader} from "lucide-react";
 import {RecentBooksSection, RecommendationSection,CatalogCTASection} from "../sections/homepage";
 
 
-const Catalog = () => {
+const HomePage = () => {
   const { getBooks, isBooksLoading} = useBookStore();
 
   useEffect(() => {
@@ -30,4 +30,4 @@ const Catalog = () => {
 }
 
 
-export default Catalog;
+export default HomePage;

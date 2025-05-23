@@ -53,6 +53,7 @@ const App = () => {
             <Route path="/catalog" element={<Catalog/>} />
             <Route path='/exchange' element={authUser ? <ExchangePage /> : <Navigate to="/login" />} />
             <Route path="/catalog/:id" element={<BookPage/>} />
+            <Route path="/catalog" element={<Catalog />} />
             <Route path="/preferences" element={authUser ? <Preferences /> : <Navigate to="/login" />}/>
             <Route path='/setup' element={<Setup/>}/>
             <Route path='/chat' element={<Chat/>}/>

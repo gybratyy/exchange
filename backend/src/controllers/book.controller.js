@@ -2,6 +2,7 @@ import Book from "../models/book.model.js";
 import Category from "../models/category.model.js";
 import cloudinary from "../lib/cloudinary.js";
 import Review from "../models/review.model.js";
+import User from "../models/user.model.js";
 
 
 function populateCategories(book) {
@@ -12,7 +13,7 @@ function populateCategories(book) {
 }
 function populateReviews(book) {
     return Promise.all(book.reviews.map(async (reviewId) => {
-        const review = await Review.findById(reviewId);
+        const review = await Review.findById(reviewId).select('_id reviewerId profilePic fullName text rating');
         return review;
     }));
 }
@@ -40,7 +41,8 @@ export const getAllBooks = async (req, res) => {
             books.map(async (book) => {
                 const categories = await populateCategories(book);
                 const reviews = await populateReviews(book);
-                return { ...book._doc, categories, reviews };
+                const owner = await User.findById(book.owner).select('_id email city country');
+                return { ...book._doc, categories, reviews, owner };
             })
         );
         res.status(200).json(booksWithCategories);
@@ -61,7 +63,8 @@ export const getBookById = async (req, res) => {
 
         const categories = await populateCategories(book);
         const reviews = await populateReviews(book);
-        res.status(200).json({ ...book._doc, categories:categories, reviews:reviews });
+        const owner = await User.findById(book.owner).select('_id email city country');
+        res.status(200).json({ ...book._doc, categories:categories, reviews:reviews, owner:owner });
 
     } catch(error){
 
@@ -108,9 +111,10 @@ export const createBook = async (req, res) =>{
     }
 }
 
+
 export const updateBook = async (req, res) => {
     const { id: bookId } = req.params;
-    const { title, description, author, publishedDate, language, categories, image, type, price } = req.body;
+    const { title, description, author, publishedDate, language, categories, image, type, price, productType, condition } = req.body;
 
 
 
@@ -126,7 +130,9 @@ export const updateBook = async (req, res) => {
                 categories: categoryIds,
                 image: await imageToCloudUrl(image),
                 type,
-                price
+                price,
+                productType,
+                condition,
             },
             { new: true }
         );
@@ -204,7 +210,7 @@ export const addReview = async (req, res) => {
         if (!book) {
             return res.status(404).json({ message: "Book not found." });
         }
-        const newReview = new Review({  reviewerId,profilePic,fullName, text, rating})
+        const newReview = new Review({  reviewerId,profilePic:profilePic || "not provided",fullName, text, rating})
         await newReview.save();
 
         book.reviews = [...book.reviews, newReview._id];

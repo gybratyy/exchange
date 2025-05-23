@@ -3,7 +3,7 @@ import { useBookStore } from "../store/useBookStore.js";
 import {useEffect} from "react";
 import { ArrowDownUpIcon, HeartIcon, EllipsisIcon} from "lucide-react";
 import {BookExtra} from "../components/BookExtra.jsx";
-import {StarRatingForm} from "../components/StartRatingForm.jsx";
+import {StarRatingForm} from "../components/StarRatingForm.jsx";
 import {StaticStarRating} from "../components/StaticStarRating.jsx";
 
 const BookPage = () => {

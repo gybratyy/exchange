@@ -1,23 +1,14 @@
-import { Search, BookOpen, Film, History, Heart } from 'lucide-react';
 import {useBookStore} from "../../store/useBookStore.js";
-import {useEffect} from "react"; // Example icons
-
-const categoriesData = [
-    { name: 'Творчество', icon: <BookOpen size={32} className="text-slate-500" />, image: 'https://placehold.co/100x100/E0E7FF/4338CA?text=Творчество&font=lora' },
-    { name: 'Ужасы', icon: <Film size={32} className="text-slate-500" />, image: 'https://placehold.co/100x100/E0E7FF/4338CA?text=Ужасы&font=lora' },
-    { name: 'История', icon: <History size={32} className="text-slate-500" />, image: 'https://placehold.co/100x100/E0E7FF/4338CA?text=История&font=lora' },
-    { name: 'Романтика', icon: <Heart size={32} className="text-slate-500" />, image: 'https://placehold.co/100x100/E0E7FF/4338CA?text=Романтика&font=lora' },
-];
-
+import {useNavigate} from "react-router-dom";
 
 export const CatalogCTASection = () => {
 
-
+const navigate = useNavigate()
 
     const { categories} = useBookStore()
     const backgroundImage = '/catalogctaimage.png'
     const backgroundColor = 'bg-slate-100'
-    const illustrationUrl = '/catalogctaillustration.png' // Default placeholder
+    const illustrationUrl = '/catalogctaillustration.png'
     const sectionStyle = backgroundImage ? { backgroundImage: `url(${backgroundImage})` } : {};
 
     return (
@@ -81,14 +72,7 @@ export const CatalogCTASection = () => {
                 </div>
 
                 <div className="text-center">
-                    {/*<button
-                        onClick={onCatalogClick}
-                        className="bg-white  text-[#707070] font-semibold  btn btn-lg  btn-wide btn-outline rounded-[40px] transition-colors duration-300 text-base md:text-lg flex items-center justify-center mx-auto group " // Removed shadow-md
-                    >
-
-                        Перейти в каталог
-                    </button>*/}
-                    <button className='btn btn-outline bg-white btn-wide rounded-3xl btn-xl ' >
+                    <button onClick={() => navigate('/catalog')}  className='btn btn-outline bg-white btn-wide rounded-3xl btn-xl ' >
                         View All
                     </button>
                 </div>

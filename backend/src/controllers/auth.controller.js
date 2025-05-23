@@ -19,6 +19,13 @@ export const signup = async (req, res) => {
 
         if (user) return res.status(400).json({message: "Email already exists"});
 
+        //for each item in preferences create a key in the  new preferences object with value 1
+        let preferencesObj = {};
+        preferences.forEach((item) => {
+            preferencesObj[item] = 1;
+        })
+
+
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -29,7 +36,7 @@ export const signup = async (req, res) => {
             telegramId,
             country,
             city,
-            preferences
+            preferences: preferencesObj
         });
 
         if (newUser) {
