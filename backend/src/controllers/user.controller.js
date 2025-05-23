@@ -9,7 +9,16 @@ export const findUserById = async (req, res) => {
             return res.status(404).json({ message: "Book not found" });
         }
 
-        res.status(200).json({ id:user._id, fullName:user.fullName, telegramId:user.telegramId});
+        res.status(200).json(
+            {
+                id:user._id,
+                fullName:user.fullName,
+                telegramId:user.telegramId,
+                country:user.country,
+                city:user.city,
+                profilePic:user.profilePic,
+            }
+            );
 
     } catch(error){
 

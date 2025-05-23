@@ -5,7 +5,7 @@ import cloudinary from "../lib/cloudinary.js";
 import Category from "../models/category.model.js";
 
 export const signup = async (req, res) => {
-    const {fullName, email, password, telegramId, country, city} = req.body;
+    const {fullName, email, password, telegramId, country, city, preferences} = req.body;
     try {
         if (!fullName || !email || !password) {
             return res.status(400).json({message: "All fields are required"});
@@ -19,6 +19,13 @@ export const signup = async (req, res) => {
 
         if (user) return res.status(400).json({message: "Email already exists"});
 
+        //for each item in preferences create a key in the  new preferences object with value 1
+        let preferencesObj = {};
+        preferences.forEach((item) => {
+            preferencesObj[item] = 1;
+        })
+
+
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -28,7 +35,8 @@ export const signup = async (req, res) => {
             password: hashedPassword,
             telegramId,
             country,
-            city
+            city,
+            preferences: preferencesObj
         });
 
         if (newUser) {

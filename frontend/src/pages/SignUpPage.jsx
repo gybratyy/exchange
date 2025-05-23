@@ -4,22 +4,10 @@ import { useBookStore } from "../store/useBookStore";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Loader2, Lock, Mail, User, ArrowLeft, Send, MapPin, Globe } from "lucide-react";
 import toast from "react-hot-toast";
+import {Stepper} from "../components/Stepper";
 
 
-const Stepper = ({ currentStep }) => {
-  const steps = ["Registration", "Select your favourite genre", "Select your location"];
-  return (
-      <div className='mb-8'>
-        <ul className="steps w-full">
-          {steps.map((step, index) => (
-              <li key={index} className={`step ${index + 1 <= currentStep ? "step-primary" : ""}`}>
-                {step}
-              </li>
-          ))}
-        </ul>
-      </div>
-  );
-};
+
 
 const SignUpPage = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -123,7 +111,7 @@ const SignUpPage = () => {
 
   return (
       <div className="min-h-screen flex flex-col justify-center items-center p-6 sm:p-12">
-        <div className="w-full max-w-[80%] space-y-8 flex flex-col ">
+        <div className="w-full max-w-[80%] space-y-8 flex flex-col align-baseline ">
 
             {currentStep > 1 && (
                <button onClick={prevStep} className="btn btn-ghost btn-sm self-start ">
@@ -137,12 +125,12 @@ const SignUpPage = () => {
           <Stepper currentStep={currentStep} />
 
           {currentStep === 1 && (
-              <div className='max-w-lg mx-auto'>
+              <div className=' mx-auto p-0 w-full'>
                 <div className="text-center">
                   <h1 className="text-2xl font-bold">Create Your Account</h1>
                   <p className="text-base-content/60">Step 1: Basic Information</p>
                 </div>
-                <form onSubmit={(e) => { e.preventDefault(); nextStep(); }} className="space-y-4">
+                <form onSubmit={(e) => { e.preventDefault(); nextStep(); }} className="space-y-4 max-w-lg mx-auto">
                   <div>
                     <label className="label"><span className="label-text font-medium">Full Name</span></label>
                     <div className="relative">
@@ -222,7 +210,6 @@ const SignUpPage = () => {
                       <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-base-content/40" />
                       <select name="country" value={formData.country} onChange={handleInputChange} className="select select-bordered w-full pl-10 rounded-xl  ">
                         <option value="Kazakhstan">Kazakhstan</option>
-                        {/* Add other countries as needed */}
                       </select>
                     </div>
                   </div>

@@ -46,6 +46,24 @@ const bookSchema = new mongoose.Schema({
         required: true,
         default:0
     },
+    productType:{
+        type: String,
+        enum: ["book", "magazine", "comics", "manga"],
+        default: "book",
+        required: true
+    },
+    reviews: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: "Review",
+        required: false,
+    },
+    condition:{
+        type: String,
+        enum: ["new", "used"],
+        default: "new",
+        required: true
+    },
+
 }, { timestamps: true });
 
 

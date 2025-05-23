@@ -104,4 +104,18 @@ export const useBookStore = create((set, get) => ({
         }
     },
     resetBook: () => set({book: {}}),
+    addReview: async (bookId, text, rating) => {
+        try{
+            const res = await axiosInstance.post(`/books/${bookId}/review`, {text:text, rating:rating});
+            set((state) => ({
+                book: {
+                    ...state.book,
+                    reviews: [...state.book.reviews, res.data],
+                },
+            }));
+        }catch(error){
+            toast.error(error.response?.data?.message || "Failed to add review");
+            throw error;
+        }
+    }
 }));
