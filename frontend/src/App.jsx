@@ -6,13 +6,13 @@ import LoginPage from "./pages/LoginPage";
 import SettingsPage from "./pages/SettingsPage";
 import ProfilePage from "./pages/ProfilePage";
 
-import { Routes, Route, Navigate } from "react-router-dom";
-import { useAuthStore } from "./store/useAuthStore";
-import { useThemeStore } from "./store/useThemeStore";
-import { useEffect } from "react";
+import {Navigate, Route, Routes} from "react-router-dom";
+import {useAuthStore} from "./store/useAuthStore";
+import {useThemeStore} from "./store/useThemeStore";
+import {useEffect} from "react";
 
-import { Loader } from "lucide-react";
-import { Toaster } from "react-hot-toast";
+import {Loader} from "lucide-react";
+import {Toaster} from "react-hot-toast";
 import Catalog from "./pages/Catalog.jsx";
 import BookPage from "./pages/BookPage.jsx";
 import ExchangePage from "./pages/ExchangePage.jsx";
@@ -21,6 +21,8 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import Preferences from "./pages/Preferences.jsx";
 import Chat from "./pages/Chat.jsx";
 import Setup from "./pages/Setup.jsx";
+import BlogPage from "./pages/BlogPage.jsx";
+import BlogsPage from "./pages/BlogsPage.jsx";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
@@ -57,6 +59,8 @@ const App = () => {
             <Route path="/preferences" element={authUser ? <Preferences /> : <Navigate to="/login" />}/>
             <Route path='/setup' element={<Setup/>}/>
             <Route path='/chat' element={<Chat/>}/>
+            <Route path='/blog/:id' element={<BlogPage/>}/>
+            <Route path='/blog' element={<BlogsPage/>}/>
         </Routes>
         </LocalizationProvider>
 

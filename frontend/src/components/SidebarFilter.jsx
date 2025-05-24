@@ -27,7 +27,7 @@ export const SidebarFilter = ({filters, setFilters, dynamicFilterOptions, onCoun
 
 
     return (
-        <aside className="w-full md:w-72 lg:w-80 bg-white p-5 shadow-lg rounded-lg h-full overflow-y-auto">
+        <aside className="w-full md:w-72 lg:w-80 bg-white p-5  rounded-lg h-full overflow-y-auto">
             <h2 className="text-xl font-semibold text-slate-800 mb-6 flex items-center">
                 <Filter size={20} className="mr-2 text-indigo-600" /> Фильтры
             </h2>

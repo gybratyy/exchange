@@ -5,13 +5,14 @@ import cors from "cors";
 
 import path from "path";
 
-import { connectDB } from "./lib/db.js";
+import {connectDB} from "./lib/db.js";
 
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
 import bookRoutes from "./routes/book.route.js";
 import userRoutes from "./routes/user.route.js"
-import { app, server } from "./lib/socket.js";
+import {app, server} from "./lib/socket.js";
+import blogRoutes from "./routes/blog.route.js";
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/books", bookRoutes)
 app.use("/api/user", userRoutes)
+app.use("/api/blog", blogRoutes)
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));

@@ -1,5 +1,6 @@
 import {Book, FileText, Globe, MapPin, Smile, Star, Tag} from "lucide-react";
 import {useMemo} from "react";
+import {Link} from "react-router-dom";
 
 export const ProductCard = ({ product }) => {
     const getProductIcon = (type) => {
@@ -33,7 +34,7 @@ export const ProductCard = ({ product }) => {
 
 
     return (
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col">
+        <div className="bg-white rounded-lg  overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col">
             <div className="relative">
                 <img
                     src={product.image || `https://placehold.co/300x450/E2E8F0/4A5568?text=Книга&font=lora`}
@@ -57,9 +58,11 @@ export const ProductCard = ({ product }) => {
                 )}
             </div>
             <div className="p-4 flex flex-col flex-grow">
-                <h3 className="text-lg font-semibold text-slate-800 mb-1 truncate" title={product.title}>
+
+                <Link to={`/catalog/${product._id}`}><h3 className="text-lg font-semibold text-slate-800 mb-1 truncate"
+                                                         title={product.title}>
                     {product.title}
-                </h3>
+                </h3></Link>
                 <p className="text-sm text-slate-600 mb-2 truncate" title={product.author}>{product.author}</p>
 
                 {product.language &&
