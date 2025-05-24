@@ -1,6 +1,5 @@
 import {useEffect, useState} from 'react';
 import {LayoutGrid, List, Loader, MessageSquare, Plus, X} from 'lucide-react';
-import toast from "react-hot-toast";
 import {useBlogStore} from "../store/useBlogStore.js";
 import {BlogPostCard} from "../components/BlogPostCard.jsx";
 import {useAuthStore} from "../store/useAuthStore.js";
@@ -19,7 +18,6 @@ const BlogsPage = () => {
                 await getAllBlogs()
             } catch (error) {
                 console.error("Error fetching blog:", error);
-                toast.error(error.response?.data?.message || "Failed to fetch blogs");
             }
         };
         fetchBlog();
@@ -44,7 +42,7 @@ const BlogsPage = () => {
             <div className="container mx-auto max-w-7xl">
 
                 <div className="mb-8  w-full flex items-end justify-between gap-4">
-                    <h1 className='text-5xl font-medium'>Blog posts</h1>
+                    <h1 className='text-5xl font-medium'>Статьи</h1>
 
                     <div className="flex bg-white p-1 rounded-lg shadow">
                         <button
@@ -102,7 +100,7 @@ const BlogsPage = () => {
                                 <X size={24}/>
                             </button>
                         </div>
-                        <div className="overflow-y-auto pr-2 -mr-2 flex-grow"> {/* Added padding for scrollbar */}
+                        <div className="overflow-y-auto pr-2 -mr-2 flex-grow">
                             <BlogForm closeModal={closeModal}/>
                         </div>
                     </div>

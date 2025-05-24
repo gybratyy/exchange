@@ -17,7 +17,6 @@ const BlogPage = () => {
                 await getBlogById(id);
             } catch (error) {
                 console.error("Error fetching blog:", error);
-                toast.error(error.response?.data?.message || "Failed to fetch blog");
             }
         };
 
@@ -27,14 +26,14 @@ const BlogPage = () => {
 
     const handleShare = (data) => {
         navigator.clipboard.writeText(data);
-        toast.success("Blog link copied to clipboard!");
+        toast.success("Ссылка скопирована в буфер обмена!");
     };
 
     if (blogLoading) {
         return (
             <div className="flex justify-center items-center min-h-screen bg-gray-100">
                 <Loader className="size-10 animate-spin"/>
-                <p className="ml-4 text-lg text-gray-600">Loading blog post...</p>
+                <p className="ml-4 text-lg text-gray-600">Статья загружается ...</p>
             </div>
         );
     }
@@ -42,7 +41,7 @@ const BlogPage = () => {
     if (!blog) {
         return (
             <div className="container mx-auto max-w-4xl px-4 py-8 text-center">
-                <h1 className="text-2xl font-semibold text-red-500">Blog post data is not available.</h1>
+                <h1 className="text-2xl font-semibold text-red-500">Статья не доступна</h1>
             </div>
         );
     }
@@ -66,7 +65,7 @@ const BlogPage = () => {
                                     className="font-semibold text-gray-800 text-base">{blog?.author?.fullName || "Loading author..."}</span>
                                 <div className="flex items-center text-xs text-gray-400 mt-1">
                                     <CalendarDays size={14} className="mr-1.5"/>
-                                    <span>Published on {
+                                    <span>Опубликовано {
 
                                         new Date(blog?.createdAt).toLocaleTimeString("en-US", {
                                             year: "numeric",
@@ -147,12 +146,12 @@ const BlogPage = () => {
 
                             </div>
                             <button
-                                onClick={() => handleShare(`https://website.com/blog/${blog._id}`)}
+                                onClick={() => handleShare(`https://diploma-hgwp.onrender.com/blog/${blog._id}`)}
                                 className="action-button flex items-center text-gray-600 hover:text-indigo-500 transition-colors duration-200"
                                 aria-label="Share this post"
                             >
                                 <Share2 size={20} className="mr-1.5"/>
-                                <span className="text-sm font-medium">Share</span>
+                                <span className="text-sm font-medium">Поделиться</span>
                             </button>
                         </div>
 

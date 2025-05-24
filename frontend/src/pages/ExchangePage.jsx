@@ -1,4 +1,4 @@
-import {PlusIcon, LayoutGridIcon, LayoutListIcon, MinusIcon} from "lucide-react";
+import {LayoutGridIcon, LayoutListIcon, MinusIcon, PlusIcon} from "lucide-react";
 import {useEffect, useState} from "react";
 import {useBookStore} from "../store/useBookStore.js";
 import {BookCardWithMarks} from "../components/BookCardWithMarks.jsx";
@@ -41,8 +41,7 @@ const ExchangePage = () => {
                 }
             </section>
         ),
-        waiting: (<div>waiting</div>),
-        sold: (<div>sold</div>)
+
     }
     return (
         <section className='pt-20 w-[80%] mx-auto'>
@@ -68,16 +67,7 @@ const ExchangePage = () => {
                             onClick={() => setActiveTab('myBooks')}>
                             Мои книги
                         </button>
-                        <button
-                            className={`btn btn-outline max-w-[200px] rounded-[12px] px-4 ${activeTab === "waiting" ? "btn-active" : ""}`}
-                            onClick={() => setActiveTab('waiting')}>
-                            Ожидание
-                        </button>
-                        <button
-                            className={`btn btn-outline max-w-[200px] rounded-[12px] px-4 ${activeTab === "sold" ? "btn-active" : ""}`}
-                            onClick={() => setActiveTab('sold')}>
-                            Проданные книги
-                        </button>
+
                     </div>
 
                 </div>

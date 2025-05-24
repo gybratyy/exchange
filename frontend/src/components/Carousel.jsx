@@ -1,19 +1,58 @@
-import  { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import {useEffect, useMemo, useState} from 'react';
+import {ChevronLeft, ChevronRight} from 'lucide-react';
 import {CarouselItem} from "./CarouselItem.jsx";
 import {useBookStore} from "../store/useBookStore.js";
+import {useAuthStore} from "../store/useAuthStore.js";
 
-export default function     Carousel() {
+export default function Carousel() {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const {books} = useBookStore();
+    const {books, categories} = useBookStore();
+    const {authUser} = useAuthStore();
+
+
+    const userPreferences = authUser?.preferences || {};
+
+    const recommendedBooks = useMemo(() => {
+        if (!books || books.length === 0 || !categories || categories.length === 0) {
+            return books || [];
+        }
+
+        const categoryNameToIdMap = categories.reduce((acc, category) => {
+            acc[category.name] = category._id;
+            return acc;
+        }, {});
+
+        const scoredBooks = books.map(book => {
+            let preferenceScore = 0;
+            if (book.categories && Array.isArray(book.categories)) {
+                book.categories.forEach(categoryName => {
+                    const categoryId = categoryNameToIdMap[categoryName];
+                    if (categoryId && userPreferences[categoryId]) {
+                        preferenceScore += userPreferences[categoryId];
+                    }
+                });
+            }
+            return {...book, preferenceScore};
+        });
+
+        return scoredBooks.sort((a, b) => {
+            if (b.preferenceScore !== a.preferenceScore) {
+                return b.preferenceScore - a.preferenceScore;
+            }
+
+            return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+
+    }, [books, categories, userPreferences]);
+
     const nextSlide = () => {
         setCurrentIndex((prevIndex) =>
-            prevIndex === books.length - 1 ? 0 : prevIndex + 1
+            prevIndex === 4 ? 0 : prevIndex + 1
         );
     };
     const prevSlide = () => {
         setCurrentIndex((prevIndex) =>
-            prevIndex === 0 ? books.length - 1 : prevIndex - 1
+            prevIndex === 0 ? 4 : prevIndex - 1
         );
     };
     const goToSlide = (index) => {
@@ -27,18 +66,19 @@ export default function     Carousel() {
     if (!books || books.length === 0) {
         return (
             <div className="min-h-screen bg-slate-200 flex items-center justify-center text-slate-700">
-                Loading books or no books available...
+                Книги не найдены
             </div>
         );
     }
 
+    const carouselBooks = recommendedBooks.slice(0, 5);
     return (
         <div className="h-full flex flex-col items-center justify-center  relative overflow-hidden">
 
             <div className="bg-white  rounded-xl w-full  relative">
 
                 <div className="relative h-full flex items-center justify-center overflow-hidden rounded-xl">
-                    {books.map((book, index) => (
+                    {carouselBooks.map((book, index) => (
                         <CarouselItem
                             key={book.id}
                             book={book}
@@ -65,7 +105,7 @@ export default function     Carousel() {
 
             </div>
             <div className="transform flex mx-auto mt-4 gap-2">
-                {books.map((_, index) => (
+                {carouselBooks.map((_, index) => (
                     <button
                         key={index}
                         onClick={() => goToSlide(index)}
