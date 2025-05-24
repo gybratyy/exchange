@@ -6,28 +6,16 @@ export function formatMessageTime(date) {
   });
 }
 
-export async function fetchReviewsWithUserData(reviews, axiosInstance) {
-  if (!reviews || Object.keys(reviews).length === 0) return [];
-  const reviewEntries = Object.entries(reviews);
-
-  return Promise.all(
-      reviewEntries.map(async ([reviewerid, review]) => {
-        try {
-          const userRes = await axiosInstance.get(`/user/${reviewerid}`);
-          return {
-            reviewerid,
-            profilePic: userRes.data.profilePic,
-            fullName: userRes.data.fullName,
-            review,
-          };
-        } catch {
-          return {
-            reviewerid,
-            profilePic: null,
-            fullName: 'Unknown User',
-            review,
-          };
-        }
-      })
-  );
-}
+export const formatDate = (dateString) => {
+  if (!dateString) return 'N/A';
+  try {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
+  } catch (e) {
+    console.error("Error formatting date:", dateString, e);
+    return "Invalid Date";
+  }
+};

@@ -1,5 +1,5 @@
-import  { useState, useEffect, useMemo } from 'react';
-import {  Filter, Search, RefreshCw } from 'lucide-react';
+import {useEffect, useMemo, useState} from 'react';
+import {Filter, Loader, Search} from 'lucide-react';
 import {useBookStore} from "../store/useBookStore.js";
 import {SidebarFilter} from "../components/SidebarFilter.jsx";
 import {ProductGrid} from "../components/ProductGrid.jsx";
@@ -177,7 +177,7 @@ export default function Catalog() {
     if (isBooksLoading) {
         return (
             <div className="flex items-center justify-center h-screen">
-                <RefreshCw className="size-10 animate-spin text-indigo-600" />
+                <Loader className="size-10 animate-spin"/>
                 <p className="ml-2 text-slate-600">Загрузка книг...</p>
             </div>
         );
@@ -194,7 +194,7 @@ export default function Catalog() {
                             placeholder="Поиск по названию или автору..."
                             value={filters.searchTerm}
                             onChange={(e) => setFilters(prev => ({ ...prev, searchTerm: e.target.value }))}
-                            className="w-full py-2.5 pl-10 pr-4 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                            className="w-full py-2.5 pl-10 pr-4 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         />
                         <Search size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
                     </div>
