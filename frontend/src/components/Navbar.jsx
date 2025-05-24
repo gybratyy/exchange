@@ -17,11 +17,11 @@ const Navbar = () => {
                         </Link>
                     </div>
                     <div className="flex items-center gap-2">
-                        <Link to='/' className='btn btn-sm'>Home</Link>
-                        <Link to='/blog' className='btn btn-sm'>Blogs</Link>
-                        <Link to='/catalog' className='btn btn-sm'>Catalog</Link>
-                        <Link to='/chat' className='btn btn-sm'>Messages</Link>
-                        <Link to='/exchange' className='btn btn-sm'>Exchange</Link>
+                        <Link to='/' className='btn btn-sm'>Домашняя страница</Link>
+                        <Link to='/blog' className='btn btn-sm'>Блог</Link>
+                        <Link to='/catalog' className='btn btn-sm'>Каталог</Link>
+                        <Link to='/chat' className='btn btn-sm'>Сообщения</Link>
+                        <Link to='/exchange' className='btn btn-sm'>Обмен</Link>
                     </div>
                     <div className="flex items-center gap-2">
                         <Link
@@ -32,19 +32,19 @@ const Navbar = () => {
               `}
                         >
                             <Settings className="w-4 h-4"/>
-                            <span className="hidden sm:inline">Settings</span>
+                            <span className="hidden sm:inline">Настройки</span>
                         </Link>
 
                         {authUser ? (
                             <>
                                 <Link to={"/profile"} className={`btn btn-sm gap-2`}>
                                     <User className="size-5"/>
-                                    <span className="hidden sm:inline">Profile</span>
+                                    <span className="hidden sm:inline">Профиль</span>
                                 </Link>
 
                                 <button className="flex gap-2 items-center" onClick={logout}>
                                     <LogOut className="size-5"/>
-                                    <span className="hidden sm:inline">Logout</span>
+                                    <span className="hidden sm:inline">Выйти</span>
                                 </button>
                             </>
                         ):(
@@ -56,7 +56,7 @@ const Navbar = () => {
               `}
                             >
                                 <LogIn className="w-4 h-4"/>
-                                <span className="hidden sm:inline">Log In</span>
+                                <span className="hidden sm:inline">Зайти</span>
                             </Link>
                         )}
                     </div>

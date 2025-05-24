@@ -1,12 +1,10 @@
-import { useState, useEffect } from "react";
-import { useAuthStore } from "../store/useAuthStore";
-import { useBookStore } from "../store/useBookStore";
-import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Loader2, Lock, Mail, User, ArrowLeft, Send, MapPin, Globe } from "lucide-react";
+import {useEffect, useState} from "react";
+import {useAuthStore} from "../store/useAuthStore";
+import {useBookStore} from "../store/useBookStore";
+import {Link, useNavigate} from "react-router-dom";
+import {ArrowLeft, Eye, EyeOff, Globe, Loader2, Lock, Mail, MapPin, Send, User} from "lucide-react";
 import toast from "react-hot-toast";
 import {Stepper} from "../components/Stepper";
-
-
 
 
 const SignUpPage = () => {
@@ -127,26 +125,26 @@ const SignUpPage = () => {
           {currentStep === 1 && (
               <div className=' mx-auto p-0 w-full'>
                 <div className="text-center">
-                  <h1 className="text-2xl font-bold">Create Your Account</h1>
-                  <p className="text-base-content/60">Step 1: Basic Information</p>
+                  <h1 className="text-2xl font-bold">Создать аккаунт</h1>
+                  <p className="text-base-content/60">Шаг 1: Базовая Информация</p>
                 </div>
                 <form onSubmit={(e) => { e.preventDefault(); nextStep(); }} className="space-y-4 max-w-lg mx-auto">
                   <div>
-                    <label className="label"><span className="label-text font-medium">Full Name</span></label>
+                    <label className="label"><span className="label-text font-medium">ФИО</span></label>
                     <div className="relative">
                       <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-base-content/40" />
                       <input type="text" name="fullName" placeholder="John Doe" value={formData.fullName} onChange={handleInputChange} className="input input-bordered w-full pl-10 rounded-xl" />
                     </div>
                   </div>
                   <div>
-                    <label className="label"><span className="label-text font-medium">Email</span></label>
+                    <label className="label"><span className="label-text font-medium">Почта</span></label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-base-content/40" />
                       <input type="email" name="email" placeholder="you@example.com" value={formData.email} onChange={handleInputChange} className="input input-bordered w-full pl-10 rounded-xl" />
                     </div>
                   </div>
                   <div>
-                    <label className="label"><span className="label-text font-medium">Password</span></label>
+                    <label className="label"><span className="label-text font-medium">Пароль</span></label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-base-content/40" />
                       <input type={showPassword ? "text" : "password"} name="password" placeholder="••••••••" value={formData.password} onChange={handleInputChange} className="input input-bordered w-full pl-10 pr-10 rounded-xl" />
@@ -162,7 +160,7 @@ const SignUpPage = () => {
                       <input type="text" name="telegramId" placeholder="@username" value={formData.telegramId} onChange={handleInputChange} className="input input-bordered w-full pl-10 rounded-xl" />
                     </div>
                   </div>
-                  <button type="submit" className="btn btn-primary w-full rounded-3xl">Next</button>
+                  <button type="submit" className="btn btn-primary w-full rounded-3xl">Дальше</button>
                 </form>
               </div>
           )}

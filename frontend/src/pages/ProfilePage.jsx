@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useAuthStore } from "../store/useAuthStore";
-import { Camera, Mail, User } from "lucide-react";
+import {useState} from "react";
+import {useAuthStore} from "../store/useAuthStore";
+import {Camera, Mail, User} from "lucide-react";
 
 const ProfilePage = () => {
   const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
@@ -26,11 +26,11 @@ const ProfilePage = () => {
       <div className="max-w-2xl mx-auto p-4 py-8">
         <div className="bg-base-300 rounded-xl p-6 space-y-8">
           <div className="text-center">
-            <h1 className="text-2xl font-semibold ">Profile</h1>
-            <p className="mt-2">Your profile information</p>
+            <h1 className="text-2xl font-semibold ">Профиль</h1>
+            <p className="mt-2">Ваши данные</p>
           </div>
 
-          {/* avatar upload section */}
+
 
           <div className="flex flex-col items-center gap-4">
             <div className="relative">
@@ -61,7 +61,7 @@ const ProfilePage = () => {
               </label>
             </div>
             <p className="text-sm text-zinc-400">
-              {isUpdatingProfile ? "Uploading..." : "Click the camera icon to update your photo"}
+              {isUpdatingProfile ? "Обновляется..." : "Нажмите на изображение, чтобы изменить его"}
             </p>
           </div>
 
@@ -69,7 +69,7 @@ const ProfilePage = () => {
             <div className="space-y-1.5">
               <div className="text-sm text-zinc-400 flex items-center gap-2">
                 <User className="w-4 h-4" />
-                Full Name
+                ФИО
               </div>
               <p className="px-4 py-2.5 bg-base-200 rounded-lg border">{authUser?.fullName}</p>
             </div>
@@ -77,22 +77,22 @@ const ProfilePage = () => {
             <div className="space-y-1.5">
               <div className="text-sm text-zinc-400 flex items-center gap-2">
                 <Mail className="w-4 h-4" />
-                Email Address
+                Адрес электронной почты
               </div>
               <p className="px-4 py-2.5 bg-base-200 rounded-lg border">{authUser?.email}</p>
             </div>
           </div>
 
           <div className="mt-6 bg-base-300 rounded-xl p-6">
-            <h2 className="text-lg font-medium  mb-4">Account Information</h2>
+            <h2 className="text-lg font-medium  mb-4">Сведения</h2>
             <div className="space-y-3 text-sm">
               <div className="flex items-center justify-between py-2 border-b border-zinc-700">
-                <span>Member Since</span>
+                <span>Пользователь с</span>
                 <span>{authUser.createdAt?.split("T")[0]}</span>
               </div>
               <div className="flex items-center justify-between py-2">
-                <span>Account Status</span>
-                <span className="text-green-500">Active</span>
+                <span>Статус</span>
+                <span className="text-green-500">Активен</span>
               </div>
             </div>
           </div>

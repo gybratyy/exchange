@@ -3,7 +3,7 @@ import {HomePageSectionContainer} from "../../components/HomePageSectionContaine
 
 export const RecommendationSection = () => {
     return (
-        <HomePageSectionContainer name='Recommended to you' link='/preferences'>
+        <HomePageSectionContainer name='Рекомендовано вам' link='/preferences'>
             <Carousel/>
         </HomePageSectionContainer>
     )

@@ -5,7 +5,7 @@ import {useBookStore} from "../../store/useBookStore.js";
 export const RecentBooksSection = () => {
     const {books} = useBookStore();
     return(
-        <HomePageSectionContainer name='Recently added books' link='/preferences'>
+        <HomePageSectionContainer name='Недавно добавленные книги' link='/preferences'>
             <div className=" h-[100%]  grid grid-cols-12 gap-6 pt-10 ">
                 {
                     books.map((book) => {

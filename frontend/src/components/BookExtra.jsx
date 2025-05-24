@@ -52,7 +52,6 @@ export const BookExtra = () => {
 
 
         </section>),
-        community: (<div>community</div>)
     }
     return (
         <>
@@ -67,11 +66,6 @@ export const BookExtra = () => {
                     className={`btn btn-outline  rounded-[12px] px-4 ${activeTab === "reviews" ? "btn-active" : ""}`}
                     onClick={() => setActiveTab('reviews')}>
                     Отзывы
-                </button>
-                <button
-                    className={`btn btn-outline  rounded-[12px] px-4 ${activeTab === "community" ? "btn-active" : ""}`}
-                    onClick={() => setActiveTab('community')}>
-                    Сообщество
                 </button>
 
 

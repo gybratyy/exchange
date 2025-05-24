@@ -5,7 +5,7 @@ import {useBookStore} from "../store/useBookStore.js";
 export const BookCardWithMarks = ({book, openModal}) => {
     const {image, author, title, _id, type} = book;
 
-    // Define badge styles based on book type
+
     const badgeStyles = {
         forSale: 'bg-green-500',
         forExchange: 'bg-blue-500',
@@ -13,10 +13,10 @@ export const BookCardWithMarks = ({book, openModal}) => {
         forFree: 'bg-red-500',
     };
     const typeDisplayNames = {
-        forSale: 'For Sale',
-        forExchange: 'For Exchange',
-        any: 'Exchange/Sale',
-        forFree: 'For Free',
+        forSale: 'На продажу',
+        forExchange: 'На обмен',
+        any: 'Продажа/обмен',
+        forFree: 'Бесплатно',
     };
 
     const {getBookById} = useBookStore();
@@ -56,7 +56,7 @@ export const BookCardWithMarks = ({book, openModal}) => {
             </div>
             <div className="row-span-2">
                 <Button onClick={handleClick} variant="outlined" size="small" fullWidth>
-                    Edit
+                    Редактировать
                 </Button>
             </div>
         </div>

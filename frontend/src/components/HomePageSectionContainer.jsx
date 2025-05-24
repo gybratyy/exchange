@@ -8,7 +8,7 @@ export const HomePageSectionContainer = ({name, link , children}) => {
                 <h1 className='font-bold text-3xl'>{name}</h1>
                 {link && (
                     <button className='btn btn-outline rounded-3xl btn-xl w-[10%]' onClick={() => {navigate(link)}}>
-                        View All
+                        Посмотреть все
                     </button>
                 )}
             </div>

@@ -73,7 +73,7 @@ const navigate = useNavigate()
 
                 <div className="text-center">
                     <button onClick={() => navigate('/catalog')}  className='btn btn-outline bg-white btn-wide rounded-3xl btn-xl ' >
-                        View All
+                        Посмотреть каталог
                     </button>
                 </div>
             </div>

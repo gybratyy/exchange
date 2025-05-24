@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {useAuthStore} from "../store/useAuthStore.js";
 import {useBookStore} from "../store/useBookStore.js";
-import {CirclePlus, CircleMinus, Loader2} from "lucide-react";
+import {CircleMinus, CirclePlus, Loader2} from "lucide-react";
 import {useNavigate} from "react-router-dom";
 
 const Preferences = () => {
@@ -37,8 +37,10 @@ const Preferences = () => {
 
                 <div className="col-span-10 flex flex-col items-center ">
                     <div className='text-center mb-12'>
-                        <h1 className="text-3xl font-bold mt-2 mb-5">Select your favorite categories</h1>
-                        <h3 className="text-xl">Select minimum of three genres. We use your preferences to improve recommendations in your feed</h3>
+                        <h1 className="text-3xl font-bold mt-2 mb-5">Выберите ваши любимые жанры</h1>
+                        <h3 className="text-xl">Выберите как минимум 3 ваших любимый жанров. Мы используем ваш любимый
+                            жанр что бы сделать лучше подборку рекомендации что поможет вам видеть их у себя в
+                            ленте</h3>
                     </div>
                     <div className="mb-10 grid grid-cols-10 gap-4 ">{
                         categories && categories.map((category) => (
@@ -68,7 +70,7 @@ const Preferences = () => {
                     <button onClick={()=>submitPreferences().then(navigate('/catalog'))} className='btn btn-accent btn-wide rounded-xl '>  {isFillingPreferences ? (
                         <>
                             <Loader2 className="size-5 animate-spin" />
-                            Loading...
+                            Загрузка...
                         </>
                     ) : (
                         "Continue"
