@@ -111,7 +111,6 @@ export const createBook = async (req, res) =>{
     }
 }
 
-
 export const updateBook = async (req, res) => {
     const { id: bookId } = req.params;
     const { title, description, author, publishedDate, language, categories, image, type, price, productType, condition } = req.body;
@@ -225,3 +224,51 @@ export const addReview = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
+
+export const addView = async (req, res) => {
+    const {bookId} = req.params;
+    try {
+        const book = await Book.findById(bookId);
+        if (!book) {
+            return res.status(404).json({message: "Book not found."});
+        }
+        book.views = (book.views || 0) + 1;
+        await book.save();
+        res.status(200).json({message: "View count updated successfully.", views: book.views});
+    } catch (e) {
+        console.error("Error updating view count:", e);
+        res.status(500).json({message: "Internal Server Error"});
+    }
+}
+
+export const disableBook = async (req, res) => {
+    const {bookId} = req.params;
+    try {
+        const book = await Book.findById(bookId);
+        if (!book) {
+            return res.status(404).json({message: "Book not found."});
+        }
+        book.isActive = false;
+        await book.save();
+        res.status(200).json({message: "Book disabled successfully."});
+    } catch (e) {
+        console.error("Error disabling book:", e);
+        res.status(500).json({message: "Internal Server Error"});
+    }
+}
+export const enableBook = async (req, res) => {
+    const {bookId} = req.params;
+    try {
+        const book = await Book.findById(bookId);
+        if (!book) {
+            return res.status(404).json({message: "Book not found."});
+        }
+        book.isActive = true;
+        await book.save();
+        res.status(200).json({message: "Book enabled successfully."});
+    } catch (e) {
+        console.error("Error enabling book:", e);
+        res.status(500).json({message: "Internal Server Error"});
+    }
+}
+

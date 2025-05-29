@@ -63,6 +63,22 @@ const bookSchema = new mongoose.Schema({
         default: "new",
         required: true
     },
+    views: {
+        type: Number,
+        default: 0,
+        required: true
+    },
+    isActive: {
+        type: Boolean,
+        default: true,
+        required: true
+    },
+    status: {
+        type: String,
+        enum: ["available", "reserved"],
+        default: "available",
+        required: true
+    }
 
 }, { timestamps: true });
 
