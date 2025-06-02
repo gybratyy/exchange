@@ -1,6 +1,6 @@
 import {Book, FileText, Globe, MapPin, Smile, Star, Tag} from "lucide-react";
-import {useMemo} from "react";
 import {Link} from "react-router-dom";
+import {typeDisplayNames} from "../lib/utils.js";
 
 export const ProductCard = ({ product }) => {
     const getProductIcon = (type) => {
@@ -13,15 +13,8 @@ export const ProductCard = ({ product }) => {
         }
     };
 
-    const typeDisplayNames = {
-        forSale: 'Продажа',
-        forExchange: 'Обмен',
-        forFree: 'Бесплатно',
-        any: 'Продажа/Обмен',
-    };
 
-
-    const averageRating = useMemo(() => {
+    const averageRating = 4/*useMemo(() => {
         if (!product.reviews || product.reviews.length === 0) {
             if (product.rating && typeof product.rating === 'object' && Object.keys(product.rating).length > 0) {
                 return 0;
@@ -30,7 +23,7 @@ export const ProductCard = ({ product }) => {
         }
         const totalRating = product.reviews.reduce((sum, review) => sum + (review.rating || 0), 0);
         return Math.round(totalRating / product.reviews.length);
-    }, [product.reviews, product.rating]);
+    }, [product.reviews, product.rating]);*/
 
 
     return (
@@ -44,12 +37,10 @@ export const ProductCard = ({ product }) => {
                 />
                 <div
                     className={`absolute top-2 right-2 px-2.5 py-1 text-xs font-semibold text-white rounded-full shadow-md ${
-                        product.type === 'forExchange' ? 'bg-blue-500' :
-                            product.type === 'forSale' ? 'bg-green-500' :
-                                product.type === 'forFree' ? 'bg-red-500' : 'bg-purple-500' // for 'any' or default
+                        typeDisplayNames[product.type].bgColor
                     }`}
                 >
-                    {typeDisplayNames[product.type] || product.type} {product.type === 'forSale' && product.price ? `(${product.price} тг)` : ''}
+                    {typeDisplayNames[product.type].label || product.type} {product.type === 'forSale' && product.price ? `(${product.price} тг)` : ''}
                 </div>
                 {product.productType && (
                     <div className="absolute bottom-2 left-2 px-2 py-1 bg-black bg-opacity-50 text-white text-xs rounded flex items-center">

@@ -51,7 +51,7 @@ export const BlogPostCard = ({post, interact, authUser}) => {
                     <div className="flex items-center space-x-4">
                         <button
                             onClick={() => interact("like", post._id)}
-                            className={`action-button flex items-center ${post?.likes?.includes(authUser._id) ? "text-green-500" : "text-gray-600"} hover:text-green-500 transition-colors duration-200`}
+                            className={`action-button flex items-center ${authUser && post?.likes?.includes(authUser._id) ? "text-green-500" : "text-gray-600"} hover:text-green-500 transition-colors duration-200`}
                             aria-label="Like this post"
                         >
                             <ThumbsUp size={20} className="mr-1.5"/>
@@ -59,7 +59,7 @@ export const BlogPostCard = ({post, interact, authUser}) => {
                         </button>
                         <button
                             onClick={() => interact("dislike", post._id)}
-                            className={`action-button flex items-center ${post?.dislikes?.includes(authUser._id) ? "text-red-500" : "text-gray-600"} hover:text-red-500 transition-colors duration-200`}
+                            className={`action-button flex items-center ${authUser && post?.dislikes?.includes(authUser._id) ? "text-red-500" : "text-gray-600"} hover:text-red-500 transition-colors duration-200`}
                             aria-label="Dislike this post"
                         >
                             <ThumbsDown size={20} className="mr-1.5"/>

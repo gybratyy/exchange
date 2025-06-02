@@ -36,6 +36,7 @@ const BlogsPage = () => {
             </div>
         );
     }
+    console.log(blogs)
 
     return (
         <div className="bg-gray-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8">

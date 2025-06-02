@@ -7,8 +7,10 @@ import {
     getBlogById,
     getMyBlogs,
     interact,
-    updateBlog
+    updateBlog,
+    addView
 } from "../controllers/blog.controller.js";
+
 
 
 const router = express.Router();
@@ -23,6 +25,7 @@ router.post('/:id/interact', protectRoute, interact);
 router.get('/', getAllBlogs);
 
 router.get('/:id', getBlogById);
+router.get('/:blogId/view', addView);
 router.post('/update/:id', protectRoute, updateBlog);
 router.delete('/:id', protectRoute, deleteBlog);
 

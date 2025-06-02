@@ -1,5 +1,6 @@
 import Blog from "../models/blog.model.js";
 import cloudinary from "../lib/cloudinary.js";
+import Book from "../models/book.model.js";
 
 async function imageToCloudUrl(image) {
     const uploadResponse = await cloudinary.uploader.upload(image);
@@ -126,5 +127,21 @@ export const interact = async (req, res) => {
         res.status(200).json(blog);
     } catch {
         res.status(500).json({message: error.message});
+    }
+}
+
+export const addView = async (req, res) => {
+    const {blogId} = req.params;
+    try {
+        const blog = await Blog.findById(blogId);
+        if (!blog) {
+            return res.status(404).json({message: "Book not found."});
+        }
+        blog.views = (blog.views || 0) + 1;
+        await blog.save();
+        res.status(200).json({message: "View count updated successfully.", views: blog.views});
+    } catch (e) {
+        console.error("Error updating view count:", e);
+        res.status(500).json({message: "Internal Server Error"});
     }
 }

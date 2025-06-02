@@ -46,7 +46,13 @@ export default function Catalog() {
     useEffect(() => {
         if (books && books.length > 0) {
             const productTypes = [...new Set(books.map(book => book.productType).filter(Boolean))];
-            const categories = [...new Set(books.flatMap(book => book.categories).filter(Boolean))].sort();
+            const categories = [
+                ...new Set(
+                    books
+                        .flatMap(book => Array.isArray(book.categories) ? book.categories.map(cat => cat.name) : [])
+                        .filter(Boolean)
+                )
+            ].sort();
             const languages = [...new Set(books.map(book => book.language).filter(Boolean))].map(lang => ({name: lang, flag: ''})).sort((a,b) => a.name.localeCompare(b.name));
 
 
@@ -134,7 +140,7 @@ export default function Catalog() {
             const { productTypes, categories, languages, types, bookRating, country, city, priceRange, conditions, searchTerm } = filters;
 
             if (productTypes.length > 0 && !productTypes.includes(product.productType)) return false;
-            if (categories.length > 0 && !product.categories.some(cat => categories.includes(cat))) return false;
+            if (categories.length > 0 && !product.categories.some(cat => categories.includes(typeof cat === 'string' ? cat : cat.name))) return false;
             if (languages.length > 0 && !languages.includes(product.language)) return false;
             if (types.length > 0 && !types.includes(product.type)) return false;
 

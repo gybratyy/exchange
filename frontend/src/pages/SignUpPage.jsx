@@ -108,7 +108,7 @@ const SignUpPage = () => {
 
 
   return (
-      <div className="min-h-screen flex flex-col justify-center items-center p-6 sm:p-12">
+      <div className="min-h-screen flex flex-col  items-center p-6 sm:p-12">
         <div className="w-full max-w-[80%] space-y-8 flex flex-col align-baseline ">
 
             {currentStep > 1 && (
@@ -123,45 +123,66 @@ const SignUpPage = () => {
           <Stepper currentStep={currentStep} />
 
           {currentStep === 1 && (
-              <div className=' mx-auto p-0 w-full'>
+              <div className=' mx-auto px-16 py-14 rounded-[20px] w-full max-w-lg bg-[#11131A] text-white'>
                 <div className="text-center">
                   <h1 className="text-2xl font-bold">Создать аккаунт</h1>
-                  <p className="text-base-content/60">Шаг 1: Базовая Информация</p>
+                  <p className="">Шаг 1: Базовая Информация</p>
                 </div>
-                <form onSubmit={(e) => { e.preventDefault(); nextStep(); }} className="space-y-4 max-w-lg mx-auto">
+                <form onSubmit={(e) => {
+                  e.preventDefault();
+                  nextStep();
+                }} className=" max-w-lg mx-auto">
                   <div>
-                    <label className="label"><span className="label-text font-medium">ФИО</span></label>
+                    <label className="label"><span className="font-medium">ФИО</span></label>
                     <div className="relative">
                       <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-base-content/40" />
-                      <input type="text" name="fullName" placeholder="John Doe" value={formData.fullName} onChange={handleInputChange} className="input input-bordered w-full pl-10 rounded-xl" />
+                      <input type="text" name="fullName" placeholder="John Doe" value={formData.fullName}
+                             onChange={handleInputChange}
+                             className="input input-bordered w-full pl-10 rounded-xl text-black"/>
                     </div>
                   </div>
                   <div>
-                    <label className="label"><span className="label-text font-medium">Почта</span></label>
+                    <label className="label"><span className="font-medium">Почта</span></label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-base-content/40" />
-                      <input type="email" name="email" placeholder="you@example.com" value={formData.email} onChange={handleInputChange} className="input input-bordered w-full pl-10 rounded-xl" />
+                      <input type="email" name="email" placeholder="you@example.com" value={formData.email}
+                             onChange={handleInputChange}
+                             className="input input-bordered w-full pl-10 rounded-xl text-black"/>
                     </div>
                   </div>
                   <div>
-                    <label className="label"><span className="label-text font-medium">Пароль</span></label>
+                    <label className="label"><span className="font-medium">Пароль</span></label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-base-content/40" />
-                      <input type={showPassword ? "text" : "password"} name="password" placeholder="••••••••" value={formData.password} onChange={handleInputChange} className="input input-bordered w-full pl-10 pr-10 rounded-xl" />
+                      <input type={showPassword ? "text" : "password"} name="password" placeholder="••••••••"
+                             value={formData.password} onChange={handleInputChange}
+                             className="input input-bordered w-full pl-10 pr-10 rounded-xl text-black"/>
                       <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2">
                         {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                       </button>
                     </div>
                   </div>
                   <div>
-                    <label className="label"><span className="label-text font-medium">Telegram ID (Optional)</span></label>
+                    <label className="label"><span className="font-medium">Telegram ID (Optional)</span></label>
                     <div className="relative">
                       <Send className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-base-content/40" />
-                      <input type="text" name="telegramId" placeholder="@username" value={formData.telegramId} onChange={handleInputChange} className="input input-bordered w-full pl-10 rounded-xl" />
+                      <input type="text" name="telegramId" placeholder="@username" value={formData.telegramId}
+                             onChange={handleInputChange}
+                             className="input input-bordered w-full pl-10 rounded-xl text-black"/>
                     </div>
                   </div>
-                  <button type="submit" className="btn btn-primary w-full rounded-3xl">Дальше</button>
+                  <button type="submit"
+                          className="mt-10 btn w-full rounded-3xl  hover:bg-[#408ACF] border-0 text-[#11131A]">Дальше
+                  </button>
                 </form>
+                <div className="text-center mt-4">
+                  <p className="">
+                    Already have an account?{" "}
+                    <Link to="/login" className="link  hover:text-[#408ACF]">
+                      Sign in
+                    </Link>
+                  </p>
+                </div>
               </div>
           )}
 
@@ -190,8 +211,12 @@ const SignUpPage = () => {
                       </button>
                   ))}
                 </div>
-                <button onClick={nextStep} className="btn btn-primary w-[25%] mt-4 mx-auto rounded-3xl" disabled={formData.preferences.length < 3}>Next</button>
-                <p className="text-center text-sm text-base-content/60 mt-2">Тут нет ваших любимых жанров? <Link to="/contact" className="link link-hover">Напишите</Link></p>
+                <button onClick={nextStep} className="btn hover:bg-[#408ACF] w-[25%] mt-4 mx-auto rounded-3xl"
+                        disabled={formData.preferences.length < 3}>Next
+                </button>
+                <p className="text-center text-sm mt-2">Тут нет ваших любимых жанров? <Link to="/contact"
+                                                                                            className="link link-hover">Напишите</Link>
+                </p>
               </div>
           )}
 
@@ -222,7 +247,7 @@ const SignUpPage = () => {
                       </select>
                     </div>
                   </div>
-                  <button type="submit" className="btn btn-primary w-full rounded-3xl" disabled={isSigningUp}>
+                  <button type="submit" className="btn hover:bg-[#408ACF] w-full rounded-3xl" disabled={isSigningUp}>
                     {isSigningUp ? <Loader2 className="animate-spin" /> : "Finish Registration"}
                   </button>
                 </form>
@@ -230,16 +255,6 @@ const SignUpPage = () => {
               </div>
           )}
 
-          {(currentStep === 1) && (
-              <div className="text-center mt-4">
-                <p className="text-base-content/60">
-                  Already have an account?{" "}
-                  <Link to="/login" className="link link-primary">
-                    Sign in
-                  </Link>
-                </p>
-              </div>
-          )}
         </div>
       </div>
   );

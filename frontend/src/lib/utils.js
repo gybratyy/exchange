@@ -19,3 +19,10 @@ export const formatDate = (dateString) => {
     return "Invalid Date";
   }
 };
+
+export const typeDisplayNames = {
+    forSale: {label: 'Продажа', bgColor: "bg-green-500"},
+    forExchange: {label: 'Обмен', bgColor: "bg-blue-500"},
+    forFree: {label: 'Бесплатно', bgColor: "bg-red-500"},
+    any: {label: 'Продажа/Обмен', bgColor: "bg-purple-500"},
+};

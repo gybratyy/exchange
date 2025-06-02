@@ -19,8 +19,8 @@ const LoginPage = () => {
   return (
 
       <div className="h-screen flex flex-col justify-center items-center p-6 sm:p-12">
-        <div className="w-full max-w-md space-y-8">
-          {/* Logo */}
+        <div className="w-full h-max-screen max-w-lg space-y-8 bg-[#11131A] px-16 py-14 rounded-[20px]">
+
           <div className="text-center mb-8">
             <div className="flex flex-col items-center gap-2 group">
               <div
@@ -29,16 +29,14 @@ const LoginPage = () => {
               >
                 <MessageSquare className="w-6 h-6 text-primary" />
               </div>
-              <h1 className="text-2xl font-bold mt-2">Добро пожаловать</h1>
-              <p className="text-base-content/60">Зайти в аккаунт</p>
+              <h1 className="text-2xl leading-8 text-white font-medium mt-2">Добро пожаловать</h1>
             </div>
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit}>
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-medium">Почта</span>
+                <span className="label-text text-white">Почта</span>
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -46,7 +44,7 @@ const LoginPage = () => {
                 </div>
                 <input
                   type="email"
-                  className={`input input-bordered w-full pl-10 rounded-xl`}
+                  className={'input input-bordered w-full pl-10 rounded-xl border-[#EAEAEA] '}
                   placeholder="you@example.com"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -56,7 +54,7 @@ const LoginPage = () => {
 
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-medium">Пароль</span>
+                <span className="label-text text-white">Пароль</span>
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -83,7 +81,8 @@ const LoginPage = () => {
               </div>
             </div>
 
-            <button type="submit" className="btn btn-primary w-full rounded-3xl" disabled={isLoggingIn}>
+            <button type="submit" className="btn w-full rounded-3xl mt-14 hover:bg-[#408ACF] border-0 text-[#11131A]"
+                    disabled={isLoggingIn}>
               {isLoggingIn ? (
                 <>
                   <Loader2 className="h-5 w-5 animate-spin" />
@@ -95,10 +94,16 @@ const LoginPage = () => {
             </button>
           </form>
 
-          <div className="text-center">
-            <p className="text-base-content/60">
+          <div className="text-center text-white flex flex-col gap-4 ">
+            <p className="">
+
+              <Link to="/signup" className="link  hover:text-[#408ACF]">
+                Забыли пароль?
+              </Link>
+            </p>
+            <p className="">
               Нет аккаунта?{" "}
-              <Link to="/signup" className="link link-primary">
+              <Link to="/signup" className="link  hover:text-[#408ACF]">
                 Зарегистрироваться
               </Link>
             </p>

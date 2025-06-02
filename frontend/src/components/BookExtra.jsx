@@ -34,9 +34,9 @@ export const BookExtra = () => {
             <StarRatingForm bookId={book._id}/>
 
             {
-                book?.reviews?.map((review) => {
+                book?.reviews?.map((review, index) => {
                     return (
-                        <div key={review.reviewerid} className={'flex justify-between pt-4'}>
+                        <div key={index} className={'flex justify-between pt-4'}>
                             <><img src={review.profilePic || 'https://www.w3schools.com/howto/img_avatar.png'}
                                          alt="profile" className={'rounded-full w-[50px] h-[50px]'}/>
                             <div>
