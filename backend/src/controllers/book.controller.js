@@ -18,6 +18,31 @@ function populateReviews(book) {
     }));
 }
 
+async function findBookAndPopulate(bookId, filter = {}) {
+    if (bookId) {
+        try {
+            return Book.findById(bookId)
+                .populate('owner', '_id fullName email city country')
+                .populate('categories', '_id name image')
+                .populate('reviews', '_id reviewerId profilePic fullName text rating');
+
+        } catch (error) {
+            console.error("Error finding book in (findBookAndPopulate):", error);
+            throw new Error("Book not found");
+        }
+    } else {
+        try {
+            return Book.find(filter)
+                .populate('owner', '_id fullName email city country')
+                .populate('categories', '_id name image')
+                .populate('reviews', '_id reviewerId profilePic fullName text rating');
+        } catch (error) {
+            console.error("Error finding books in (findBookAndPopulate):", error);
+            throw new Error("Book not found");
+        }
+    }
+}
+
 async function categoriesToIds(categories) {
     const allCategories = await Category.find();
 
@@ -36,18 +61,11 @@ async function imageToCloudUrl(image){
 
 export const getAllBooks = async (req, res) => {
     try {
-        const books = await Book.find();
-        const booksWithCategories = await Promise.all(
-            books.map(async (book) => {
-                const categories = await populateCategories(book);
-                const reviews = await populateReviews(book);
-                const owner = await User.findById(book.owner).select('_id email city country');
-                return { ...book._doc, categories, reviews, owner };
-            })
-        );
-        res.status(200).json(booksWithCategories);
+        const books = await findBookAndPopulate();
+
+        res.status(200).json(books);
     } catch (error) {
-        console.error("Error fetching books:", error);
+        console.error("Error fetching books in (getAllBooks):", error);
         res.status(500).json({ message: "Internal Server Error" });
     }
 }
@@ -55,19 +73,11 @@ export const getAllBooks = async (req, res) => {
 export const getBookById = async (req, res) => {
     const { id: bookId} = req.params;
     try {
-        const book = await Book.findById(bookId);
-
-        if (!book) {
-            return res.status(404).json({ message: "Book not found" });
-        }
-
-        const categories = await populateCategories(book);
-        const reviews = await populateReviews(book);
-        const owner = await User.findById(book.owner).select('_id email city country');
-        res.status(200).json({ ...book._doc, categories:categories, reviews:reviews, owner:owner });
-
+        const book = await findBookAndPopulate(bookId);
+        res.status(200).json(book);
     } catch(error){
-
+        console.error("Error fetching book in (getBookById):", error);
+        res.status(500).json({message: "Internal Server Error"});
     }
 }
 
@@ -149,14 +159,10 @@ export const updateBook = async (req, res) => {
 
 export const getMyBooks = async (req, res) => {
     try {
-        const books = await Book.find({ owner: req.user._id });
-        const booksWithCategories = await Promise.all(
-            books.map(async (book) => {
-                const categories = await populateCategories(book);
-                return { ...book._doc, categories };
-            })
-        );
-        res.status(200).json(booksWithCategories);
+        const books = await findBookAndPopulate();
+        const ownerId = req.user._id;
+        const myBooks = books.filter(book => book.owner._id.toString() === ownerId.toString());
+        res.status(200).json(myBooks);
     } catch (error) {
         console.error("Error fetching books:", error);
         res.status(500).json({ message: "Internal Server Error" });
@@ -243,14 +249,19 @@ export const addView = async (req, res) => {
 
 export const disableBook = async (req, res) => {
     const {bookId} = req.params;
+    const ownerId = req.user._id;
     try {
         const book = await Book.findById(bookId);
         if (!book) {
             return res.status(404).json({message: "Book not found."});
         }
+        if (book.owner.toString() !== ownerId.toString()) {
+            return res.status(403).json({message: "You are not authorized to disable this book."});
+        }
         book.isActive = false;
         await book.save();
-        res.status(200).json({message: "Book disabled successfully."});
+        const updatedBook = await findBookAndPopulate(bookId);
+        res.status(200).json({message: "Book disabled successfully.", updatedBook});
     } catch (e) {
         console.error("Error disabling book:", e);
         res.status(500).json({message: "Internal Server Error"});
@@ -258,17 +269,35 @@ export const disableBook = async (req, res) => {
 }
 export const enableBook = async (req, res) => {
     const {bookId} = req.params;
+    const ownerId = req.user._id;
     try {
         const book = await Book.findById(bookId);
         if (!book) {
             return res.status(404).json({message: "Book not found."});
         }
+        if (book.owner.toString() !== ownerId.toString()) {
+            return res.status(403).json({message: "You are not authorized to enable this book."});
+        }
         book.isActive = true;
         await book.save();
-        res.status(200).json({message: "Book enabled successfully."});
+
+        const updatedBook = await findBookAndPopulate(bookId);
+        res.status(200).json({message: "Book enabled successfully.", updatedBook});
     } catch (e) {
         console.error("Error enabling book:", e);
         res.status(500).json({message: "Internal Server Error"});
     }
 }
 
+export const getBooksByCategory = async (req, res) => {
+    const {categoryId} = req.params;
+
+    const filter = {categories: {$in: [categoryId]}}
+    try {
+        const books = await findBookAndPopulate(null, filter);
+        res.status(200).json(books);
+    } catch {
+        res.status(500).json({message: "Internal Server Error"});
+
+    }
+}

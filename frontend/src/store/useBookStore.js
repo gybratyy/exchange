@@ -117,5 +117,13 @@ export const useBookStore = create((set, get) => ({
             toast.error(error.response?.data?.message || "Failed to add review");
             throw error;
         }
-    }
+    },
+    addView: async (bookId) => {
+        try {
+            await axiosInstance.get(`/books/${bookId}/view`);
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Failed to add view");
+            throw error;
+        }
+    },
 }));

@@ -58,5 +58,13 @@ export const useBlogStore = create((set, get) => ({
             set({blogLoading: false});
         }
     },
+    addView: async (blogId) => {
+        try {
+            await axiosInstance.get(`/blog/${blogId}/view`);
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Failed to add view");
+            throw error;
+        }
+    },
 
 }));

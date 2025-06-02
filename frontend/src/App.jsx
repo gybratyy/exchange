@@ -43,7 +43,7 @@ const App = () => {
     );
 
   return (
-    <div data-theme={theme}>
+      <div data-theme={theme} className='bg-white'>
       <Navbar />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Routes>

@@ -73,7 +73,7 @@ export default function Carousel() {
 
     const carouselBooks = recommendedBooks.slice(0, 5);
     return (
-        <div className="h-full flex flex-col items-center justify-center  relative overflow-hidden">
+        <div className="w-[80%] h-full flex flex-col items-center justify-center  relative overflow-hidden">
 
             <div className="bg-white  rounded-xl w-full  relative">
 
@@ -89,14 +89,14 @@ export default function Carousel() {
 
                 <button
                     onClick={prevSlide}
-                    className="absolute top-1/2 left-2 md:left-4 transform -translate-y-1/2 bg-[#C5C5C5] bg-opacity-70 text-white p-2 rounded-full hover:bg-opacity-100 transition-all duration-300 z-10 focus:outline-none focus:ring-2 focus:ring-slate-500"
+                    className="absolute top-1/2 left-24 transform -translate-y-1/2 bg-[#C5C5C5] bg-opacity-70 text-white p-2 rounded-full hover:bg-opacity-100 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-slate-500"
                     aria-label="Previous slide"
                 >
                     <ChevronLeft size={28} color='#444444' />
                 </button>
                 <button
                     onClick={nextSlide}
-                    className="absolute top-1/2 right-2 md:right-4 transform -translate-y-1/2 bg-[#C5C5C5] bg-opacity-70 text-white p-2 rounded-full hover:bg-opacity-100 transition-all duration-300 z-10 focus:outline-none focus:ring-2 focus:ring-slate-500"
+                    className="absolute top-1/2  right-24 transform -translate-y-1/2 bg-[#C5C5C5] bg-opacity-70 text-white p-2 rounded-full hover:bg-opacity-100 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-slate-500"
                     aria-label="Next slide"
                 >
                     <ChevronRight size={28} color='#444444' />

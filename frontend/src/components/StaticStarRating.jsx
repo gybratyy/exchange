@@ -16,7 +16,7 @@ export const StaticStarRating = ({
                 const starValue = index + 1;
                 return (
                     <StarIcon
-                        key={starValue}
+                        key={index}
                         className={`${size} ${starValue <= roundedRating ? filledColor : emptyColor}`}
                     />
                 );

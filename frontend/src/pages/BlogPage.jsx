@@ -8,20 +8,14 @@ import {useParams} from "react-router-dom";
 
 const BlogPage = () => {
     const {id} = useParams();
-    const {blog, blogLoading, getBlogById, interact} = useBlogStore()
+    const {blog, blogLoading, getBlogById, interact, addView} = useBlogStore()
     const {authUser} = useAuthStore()
 
     useEffect(() => {
-        const fetchBlog = async () => {
-            try {
-                await getBlogById(id);
-            } catch (error) {
-                console.error("Error fetching blog:", error);
-            }
-        };
-
-        fetchBlog();
-    }, [getBlogById]);
+        addView(id)
+            .then(() => getBlogById(id))
+            .catch(err => console.log(err))
+    }, [addView, id, getBlogById]);
 
 
     const handleShare = (data) => {

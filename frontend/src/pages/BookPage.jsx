@@ -3,16 +3,17 @@ import { useBookStore } from "../store/useBookStore.js";
 import {useEffect} from "react";
 import { ArrowDownUpIcon, HeartIcon, EllipsisIcon} from "lucide-react";
 import {BookExtra} from "../components/BookExtra.jsx";
-import {StarRatingForm} from "../components/StarRatingForm.jsx";
 import {StaticStarRating} from "../components/StaticStarRating.jsx";
 
 const BookPage = () => {
     const { id } = useParams();
-    const { getBookById, book,books } = useBookStore();
+    const {getBookById, addView, book} = useBookStore();
 
     useEffect(() => {
-        getBookById(id)
-    }, [getBookById, id, books]);
+        addView(id)
+            .then(() => getBookById(id))
+            .catch((error) => console.error("Error fetching book:", error));
+    }, [addView, getBookById, id]);
 
     return (
         <section className={'flex flex-col items-center max-w-[80%] justify-center pt-20 px-4 mx-auto'}>
@@ -37,9 +38,9 @@ const BookPage = () => {
                     </div>
                     <p className='pt-4 text-black text-base text-justify'>{book.description}</p>
                     <div className='pt-8 flex flex-wrap gap-4'>
-                        {book?.categories?.map(c => (
-                            <button key={c} className="btn btn-outline  rounded-[12px] px-4 ">
-                                {c}
+                        {book?.categories?.map((c, index) => (
+                            <button key={index} className="btn btn-outline  rounded-[12px] px-4 ">
+                                {c.name}
                             </button>
                         ))}
 
