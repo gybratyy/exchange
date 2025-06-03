@@ -7,6 +7,7 @@ export const useBookStore = create((set, get) => ({
     recents:[],
     book: {},
     similarBooks: [],
+    similarBooksLoading: false,
     myBooks: [],
     categories: [],
     isBooksLoading: false,
@@ -71,9 +72,8 @@ export const useBookStore = create((set, get) => ({
         }
     },
     getSimilarBooks: async (bookId) => {
-        set({isBookLoading: true});
+        set({similarBooksLoading: true});
         try {
-
             if (!bookId) return;
             axiosInstance.get(`/books/${bookId}/similar`)
                 .then((res) => {
@@ -83,7 +83,7 @@ export const useBookStore = create((set, get) => ({
                     toast.error(error.response?.data?.message || "Failed to fetch similar books");
                 })
                 .finally(() => {
-                    set({isBookLoading: false});
+                    set({similarBooksLoading: false});
                 });
         } catch (error) {
             toast.error(error.response?.data?.message || "Failed to fetch similar books");

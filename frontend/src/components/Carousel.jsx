@@ -80,7 +80,7 @@ export default function Carousel() {
                 <div className="relative h-full flex items-center justify-center overflow-hidden rounded-xl">
                     {carouselBooks.map((book, index) => (
                         <CarouselItem
-                            key={book.id}
+                            key={index}
                             book={book}
                             isActive={index === currentIndex}
                         />
