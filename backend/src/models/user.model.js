@@ -39,6 +39,12 @@ const userSchema = new mongoose.Schema(
             default: "Astana",
             required: true,
         },
+      wishlist: {
+          type: [mongoose.Schema.Types.ObjectId],
+          ref: "Book",
+          required: false,
+          default: [],
+      },
   },
   { timestamps: true }
 );

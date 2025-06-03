@@ -32,20 +32,19 @@ const BlogsPage = () => {
         return (
             <div className="flex justify-center items-center min-h-screen bg-gray-50">
                 <Loader className="size-10 animate-spin"/>
-                <p className="ml-3 text-gray-700">Загрузка статей...</p>
             </div>
         );
     }
     console.log(blogs)
 
     return (
-        <div className="bg-gray-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-            <div className="container mx-auto max-w-7xl">
+        <div className="min-h-screen w-[80%] py-6 mx-auto grid grid-cols-12 gap-10  ">
+            <div className="col-span-9">
 
                 <div className="mb-8  w-full flex items-end justify-between gap-4">
                     <h1 className='text-5xl font-medium'>Статьи</h1>
 
-                    <div className="flex bg-white p-1 rounded-lg shadow">
+                    <div className="flex bg-white p-1 rounded-lg shadow gap-1">
                         <button
                             onClick={() => setViewMode('grid')}
                             className={`p-2 rounded-md ${viewMode === 'grid' ? 'bg-indigo-100 text-indigo-600' : 'text-gray-500 hover:bg-gray-100'}`}
@@ -85,6 +84,23 @@ const BlogsPage = () => {
                 )}
 
 
+            </div>
+            <div className="col-span-3">
+                <h1 className='font-medium text-2xl leading-6'>Читают сейчас</h1>
+                {blogs.length > 0 ? (
+                    <div
+                        className={'flex flex-col gap-6'}>
+                        {blogs.map(post => (
+                            <BlogPostCard key={post._id} post={post} interact={interact} authUser={authUser}
+                                          compact={true}/>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="text-center py-12">
+                        <MessageSquare size={48} className="mx-auto text-gray-400 mb-4"/>
+                        <p className="text-xl text-gray-500">Пока нет постов в этой категории.</p>
+                    </div>
+                )}
             </div>
             {isModalOpen && (
                 <div

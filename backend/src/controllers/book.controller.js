@@ -4,21 +4,7 @@ import cloudinary from "../lib/cloudinary.js";
 import Review from "../models/review.model.js";
 import User from "../models/user.model.js";
 
-
-function populateCategories(book) {
-    return Promise.all(book.categories.map(async (categoryId) => {
-        const category = await Category.findById(categoryId);
-        return category.name;
-    }));
-}
-function populateReviews(book) {
-    return Promise.all(book.reviews.map(async (reviewId) => {
-        const review = await Review.findById(reviewId).select('_id reviewerId profilePic fullName text rating');
-        return review;
-    }));
-}
-
-async function findBookAndPopulate(bookId, filter = {}) {
+async function findBookAndPopulate(bookId, filter = {}, limit = 0) {
     if (bookId) {
         try {
             return Book.findById(bookId)
@@ -35,7 +21,8 @@ async function findBookAndPopulate(bookId, filter = {}) {
             return Book.find(filter)
                 .populate('owner', '_id fullName email city country')
                 .populate('categories', '_id name image')
-                .populate('reviews', '_id reviewerId profilePic fullName text rating');
+                .populate('reviews', '_id reviewerId profilePic fullName text rating')
+                .limit(limit);
         } catch (error) {
             console.error("Error finding books in (findBookAndPopulate):", error);
             throw new Error("Book not found");
@@ -71,7 +58,7 @@ export const getAllBooks = async (req, res) => {
 }
 
 export const getBookById = async (req, res) => {
-    const { id: bookId} = req.params;
+    const {bookId} = req.params;
     try {
         const book = await findBookAndPopulate(bookId);
         res.status(200).json(book);
@@ -122,7 +109,7 @@ export const createBook = async (req, res) =>{
 }
 
 export const updateBook = async (req, res) => {
-    const { id: bookId } = req.params;
+    const {bookId} = req.params;
     const { title, description, author, publishedDate, language, categories, image, type, price, productType, condition } = req.body;
 
 
@@ -169,6 +156,24 @@ export const getMyBooks = async (req, res) => {
     }
 }
 
+export const getSimilarBooks = async (req, res) => {
+    const {bookId} = req.params;
+    try {
+        const book = await findBookAndPopulate(bookId);
+
+        console.log(book.categories)
+        if (!book) {
+            return res.status(404).json({message: "Book not found"});
+        }
+        const categories = book.categories.map(category => category._id);
+        const similarBooks = await findBookAndPopulate(null, {categories: {$in: categories}, _id: {$ne: bookId}}, 4);
+        res.status(200).json(similarBooks);
+    } catch (error) {
+        console.error("Error fetching similar books:", error);
+        res.status(500).json({message: "Internal Server Error"});
+    }
+}
+
 export const getCategories = async (req, res) => {
     try {
         const categories = await Category.find();
@@ -180,7 +185,7 @@ export const getCategories = async (req, res) => {
 }
 
 export const deleteBook = async (req, res) => {
-    const { id: bookId } = req.params;
+    const {bookId} = req.params;
     const ownerId = req.user._id;
     try {
         const bookToDelete = await Book.findById(bookId);
@@ -299,5 +304,38 @@ export const getBooksByCategory = async (req, res) => {
     } catch {
         res.status(500).json({message: "Internal Server Error"});
 
+    }
+}
+
+export const toggleWishlist = async (req, res) => {
+    const {bookId} = req.params;
+    const userId = req.user._id;
+
+    try {
+        const user = await User.findById(userId);
+        const book = await Book.findById(bookId);
+        if (!book) {
+            return res.status(404).json({message: "Book not found"});
+        }
+        if (!user) {
+            return res.status(404).json({message: "User not found"});
+        }
+        if (!user.wishlist) {
+            user.wishlist = [];
+        }
+        const index = user.wishlist.indexOf(bookId);
+        let action;
+        if (index > -1) {
+            user.wishlist.splice(index, 1);
+            action = "removed from";
+        } else {
+            user.wishlist.push(bookId);
+            action = "added to";
+        }
+        await user.save();
+        res.status(200).json({message: `Book ${action} wishlist`, wishlist: user.wishlist});
+    } catch (e) {
+        console.error("Error toggling wishlist:", e);
+        res.status(500).json({message: "Internal Server Error"});
     }
 }

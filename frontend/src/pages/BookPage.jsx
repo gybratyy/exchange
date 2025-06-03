@@ -1,19 +1,23 @@
-import { useParams } from 'react-router-dom';
-import { useBookStore } from "../store/useBookStore.js";
+import {useParams} from 'react-router-dom';
+import {useBookStore} from "../store/useBookStore.js";
 import {useEffect} from "react";
-import { ArrowDownUpIcon, HeartIcon, EllipsisIcon} from "lucide-react";
+import {ArrowDownUpIcon, Bookmark, EllipsisIcon} from "lucide-react";
 import {BookExtra} from "../components/BookExtra.jsx";
 import {StaticStarRating} from "../components/StaticStarRating.jsx";
+import {useAuthStore} from "../store/useAuthStore.js";
 
 const BookPage = () => {
     const { id } = useParams();
-    const {getBookById, addView, book} = useBookStore();
+    const {getBookById, addView, book, isBookLoading} = useBookStore();
+    const {authUser, toggleWishlist} = useAuthStore();
 
     useEffect(() => {
         addView(id)
             .then(() => getBookById(id))
             .catch((error) => console.error("Error fetching book:", error));
-    }, [addView, getBookById, id]);
+    }, [addView, getBookById, id, toggleWishlist]);
+
+
 
     return (
         <section className={'flex flex-col items-center max-w-[80%] justify-center pt-20 px-4 mx-auto'}>
@@ -29,8 +33,9 @@ const BookPage = () => {
                             <ArrowDownUpIcon/>
                             Обменять
                         </button>
-                        <button className="btn rounded-[20px] px-3 ">
-                            <HeartIcon/>
+                        <button className="btn rounded-[20px] px-3 " onClick={() => toggleWishlist(book._id)}>
+                            <Bookmark
+                                color={authUser.wishlist && authUser.wishlist.includes(book._id) ? '#408ACF' : 'currentColor'}/>
                         </button>
                         <button className="btn rounded-[20px] px-3 ">
                             <EllipsisIcon/>

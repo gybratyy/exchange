@@ -8,6 +8,7 @@ export const useBlogStore = create((set, get) => ({
 
     blogsLoading: false,
     blogLoading: false,
+    blogUpdating: false,
 
     getBlogById: async (id) => {
         set({blogLoading: true});
@@ -46,7 +47,7 @@ export const useBlogStore = create((set, get) => ({
         }
     },
     createBlog: async (blog) => {
-        set({blogLoading: true});
+        set({blogUpdating: true});
         try {
             const res = await axiosInstance.post("/blog/create", blog);
             set((state) => ({blogs: [...state.blogs, res.data]}));
@@ -55,7 +56,7 @@ export const useBlogStore = create((set, get) => ({
             toast.error(error.response?.data?.message || "Failed to create blog");
             throw error;
         } finally {
-            set({blogLoading: false});
+            set({blogUpdating: false});
         }
     },
     addView: async (blogId) => {

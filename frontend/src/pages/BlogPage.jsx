@@ -44,10 +44,10 @@ const BlogPage = () => {
     return (
 
         <div className="bg-gray-100 text-gray-800 min-h-screen py-8">
-            <div className="container mx-auto max-w-4xl px-4">
+            <div className="w-[65%] mx-auto px-4">
 
-                <article className="bg-white  rounded-xl overflow-hidden">
-                    <div className="flex flex-wrap items-center justify-between text-sm text-gray-500 mb-6 m-2">
+                <article className="bg-white p-4 rounded-xl">
+                    <div className="flex items-center justify-between text-sm text-gray-500 mb-6 m-2">
                         <div className="flex items-center mb-2 sm:mb-0">
                             <img
                                 src={blog?.author?.profilePic || "https://placehold.co/40x40/cccccc/ffffff?text=A"}

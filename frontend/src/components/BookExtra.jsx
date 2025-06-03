@@ -7,13 +7,13 @@ import {StarRatingForm} from "./StarRatingForm.jsx";
 
 
 export const BookExtra = () => {
-    const {similarBooks, books, book, getBookById} = useBookStore()
+    const {similarBooks, getSimilarBooks, book, books} = useBookStore()
 
     const {id} = useParams();
 
     useEffect(() => {
-        getBookById(id)
-    }, [getBookById, id, books]);
+        getSimilarBooks(id)
+    }, [id, getSimilarBooks, books]);
 
 
     const [activeTab, setActiveTab] = useState('similarBooks')
