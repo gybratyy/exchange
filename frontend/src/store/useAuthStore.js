@@ -1,7 +1,7 @@
-import { create } from "zustand";
-import { axiosInstance } from "../lib/axios.js";
+import {create} from "zustand";
+import {axiosInstance} from "../lib/axios.js";
 import toast from "react-hot-toast";
-import { io } from "socket.io-client";
+import {io} from "socket.io-client";
 
 const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
 
@@ -99,6 +99,18 @@ export const useAuthStore = create((set, get) => ({
         toast.success("Preferences updated successfully");
     }
     },
+
+  toggleWishlist: async (bookId) => {
+    try {
+      const res = await axiosInstance.get(`/books/${bookId}/wishlist`);
+      toast.success(res.data.message);
+      get().checkAuth();
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to toggle wishlist");
+      throw error;
+    }
+
+  },
 
   connectSocket: () => {
     const { authUser } = get();

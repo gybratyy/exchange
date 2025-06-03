@@ -158,49 +158,49 @@ export const BookForm = ({closeModal}) => {
     const selectedCategoryDisplayNames = selectedCategories.map(c => c.name).join(', ');
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4 p-1 text-sm">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3">
+        <form onSubmit={handleSubmit} className="space-y-4 p-1 w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3 ">
                 <div>
-                    <label htmlFor="title" className="block text-xs font-medium text-gray-700 mb-0.5">
+                    <label htmlFor="title" className="block  font-medium text-gray-700 mb-0.5">
                         Название <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="text" name="title" id="title" value={title}
                         onChange={(e) => setTitle(e.target.value)} required
-                        className="mt-0.5 block w-full px-2.5 py-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs"
+                        className="mt-0.5 block w-full px-2.5 py-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:"
                     />
                 </div>
 
 
                 <div>
-                    <label htmlFor="author" className="block text-xs font-medium text-gray-700 mb-0.5">
+                    <label htmlFor="author" className="block  font-medium text-gray-700 mb-0.5">
                         Автор <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="text" name="author" id="author" value={author}
                         onChange={(e) => setAuthor(e.target.value)} required
-                        className="mt-0.5 block w-full px-2.5 py-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs"
+                        className="mt-0.5 block w-full px-2.5 py-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:"
                     />
                 </div>
 
 
                 <div className="md:col-span-2">
-                    <label htmlFor="description" className="block text-xs font-medium text-gray-700 mb-0.5">
+                    <label htmlFor="description" className="block  font-medium text-gray-700 mb-0.5">
                         Описание <span className="text-red-500">*</span>
                     </label>
                     <textarea
                         name="description" id="description" rows="4" value={description}
                         onChange={(e) => setDescription(e.target.value)} required
-                        className="mt-0.5 block w-full px-2.5 py-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs resize-none"
+                        className="mt-0.5 block w-full px-2.5 py-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm: resize-none"
                     ></textarea>
                 </div>
 
 
                 <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-0.5">Язык</label>
+                    <label className="block  font-medium text-gray-700 mb-0.5">Язык</label>
                     <div className="relative">
                         <button type="button"
-                                className="mt-0.5 block w-full px-2.5 py-1.5 border border-gray-300 rounded-md shadow-sm bg-white text-left focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs flex justify-between items-center"
+                                className="mt-0.5 block w-full px-2.5 py-1.5 border border-gray-300 rounded-md shadow-sm bg-white text-left focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm: flex justify-between items-center"
                                 onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
                         >
                             <span className={language ? "text-gray-900" : "text-gray-400"}>
@@ -218,7 +218,7 @@ export const BookForm = ({closeModal}) => {
                                              setLanguage(opt.label);
                                              setShowLanguageDropdown(false);
                                          }}
-                                         className="px-3 py-1.5 text-xs text-gray-700 hover:bg-gray-100 cursor-pointer"
+                                         className="px-3 py-1.5  text-gray-700 hover:bg-gray-100 cursor-pointer"
                                     >
                                         {opt.label}
                                     </div>
@@ -229,29 +229,29 @@ export const BookForm = ({closeModal}) => {
                 </div>
 
                 <div>
-                    <label htmlFor="publishedDate" className="block text-xs font-medium text-gray-700 mb-0.5">Дата
+                    <label htmlFor="publishedDate" className="block  font-medium text-gray-700 mb-0.5">Дата
                         публикации</label>
                     <input
                         type="date" name="publishedDate" id="publishedDate" value={publishedDate}
                         onChange={(e) => setPublishedDate(e.target.value)}
-                        className="mt-0.5 block w-full px-2.5 py-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs"
+                        className="mt-0.5 block w-full px-2.5 py-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:"
                     />
                 </div>
 
                 <div>
-                    <label htmlFor="price" className="block text-xs font-medium text-gray-700 mb-0.5">Цена (тг)</label>
+                    <label htmlFor="price" className="block  font-medium text-gray-700 mb-0.5">Цена (тг)</label>
                     <input
                         type="number" name="price" id="price" value={price}
                         onChange={(e) => setPrice(e.target.value)} placeholder="0"
-                        className="mt-0.5 block w-full px-2.5 py-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs"
+                        className="mt-0.5 block w-full px-2.5 py-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:"
                     />
                 </div>
 
                 <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-0.5">Тип объявления</label>
+                    <label className="block  font-medium text-gray-700 mb-0.5">Тип объявления</label>
                     <div className="relative">
                         <button type="button"
-                                className="mt-0.5 block w-full px-2.5 py-1.5 border border-gray-300 rounded-md shadow-sm bg-white text-left focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs flex justify-between items-center"
+                                className="mt-0.5 block w-full px-2.5 py-1.5 border border-gray-300 rounded-md shadow-sm bg-white text-left focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm: flex justify-between items-center"
                                 onClick={() => setShowTypeDropdown(!showTypeDropdown)}
                         >
                             <span className={type ? "text-gray-900" : "text-gray-400"}>
@@ -269,7 +269,7 @@ export const BookForm = ({closeModal}) => {
                                              setType(opt.value);
                                              setShowTypeDropdown(false);
                                          }}
-                                         className="px-3 py-1.5 text-xs text-gray-700 hover:bg-gray-100 cursor-pointer"
+                                         className="px-3 py-1.5  text-gray-700 hover:bg-gray-100 cursor-pointer"
                                     >
                                         {opt.label}
                                     </div>
@@ -280,10 +280,10 @@ export const BookForm = ({closeModal}) => {
                 </div>
 
                 <div className="md:col-span-2">
-                    <label className="block text-xs font-medium text-gray-700 mb-0.5">Категории</label>
+                    <label className="block  font-medium text-gray-700 mb-0.5">Категории</label>
                     <div className="relative">
                         <button type="button"
-                                className="mt-0.5 block w-full px-2.5 py-1.5 border border-gray-300 rounded-md shadow-sm bg-white text-left focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs flex justify-between items-center"
+                                className="mt-0.5 block w-full px-2.5 py-1.5 border border-gray-300 rounded-md shadow-sm bg-white text-left focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm: flex justify-between items-center"
                                 onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
                         >
                             <span className={selectedCategories.length > 0 ? "text-gray-900" : "text-gray-400"}>
@@ -298,7 +298,7 @@ export const BookForm = ({closeModal}) => {
                                 {availableCategoriesFromStore && availableCategoriesFromStore.length > 0 ? (
                                     availableCategoriesFromStore.map(category => (
                                         <label key={category._id}
-                                               className="flex items-center px-3 py-1.5 text-xs text-gray-700 hover:bg-gray-100 cursor-pointer">
+                                               className="flex items-center px-3 py-1.5  text-gray-700 hover:bg-gray-100 cursor-pointer">
                                             <input type="checkbox"
                                                    checked={selectedCategories.some(c => c._id === category._id)}
                                                    onChange={() => handleCategoryChange(category)}
@@ -308,7 +308,7 @@ export const BookForm = ({closeModal}) => {
                                         </label>
                                     ))
                                 ) : (
-                                    <div className="px-3 py-1.5 text-xs text-gray-500">Категории не найдены</div>
+                                    <div className="px-3 py-1.5  text-gray-500">Категории не найдены</div>
                                 )}
                             </div>
                         )}
@@ -317,7 +317,7 @@ export const BookForm = ({closeModal}) => {
             </div>
 
             <div className="pt-2">
-                <label className="block text-xs font-medium text-gray-700 mb-0.5">
+                <label className="block  font-medium text-gray-700 mb-0.5">
                     Изображение (до 5МБ)
                 </label>
                 <div className="mt-0.5 flex flex-col items-center">
@@ -343,7 +343,7 @@ export const BookForm = ({closeModal}) => {
                         ) : (
                             <div className="text-center text-gray-400">
                                 <UploadCloud size={32} className="mx-auto mb-1"/>
-                                <p className="text-xs">Нажмите, чтобы загрузить</p>
+                                <p className="">Нажмите, чтобы загрузить</p>
                                 <p className="text-xxs">PNG, JPG, GIF до 5МБ</p>
                             </div>
                         )}
@@ -357,12 +357,12 @@ export const BookForm = ({closeModal}) => {
 
             <div className="flex justify-end space-x-3 pt-3">
                 <button type="button" onClick={closeModal}
-                        className="px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="px-3 py-1.5  font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                     Отмена
                 </button>
                 <button type="submit"
-                        className="px-3 py-1.5 text-xs font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="px-3 py-1.5  font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                     {book && book._id ? "Обновить книгу" : "Создать книгу"}
                 </button>

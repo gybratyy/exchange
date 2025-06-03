@@ -3,10 +3,12 @@ import {useEffect, useState} from "react";
 import {useBookStore} from "../store/useBookStore.js";
 import {BookCardWithMarks} from "../components/BookCardWithMarks.jsx";
 import {BookForm} from "../components/BookForm.jsx";
+import {useAuthStore} from "../store/useAuthStore.js";
 
 const ExchangePage = () => {
     const [activeTab, setActiveTab] = useState('myBooks')
     const {myBooks, getMyBooks, resetBook, getCategories, books} = useBookStore()
+    const {authUser, checkAuth} = useAuthStore();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
 
@@ -20,8 +22,9 @@ const ExchangePage = () => {
     };
     useEffect(() => {
         getMyBooks()
-        getCategories()
-    }, [getMyBooks, getCategories, books]);
+            .then(() => getCategories())
+            .then(() => checkAuth())
+    }, [getMyBooks, getCategories, books, checkAuth]);
 
 
     function handleCreateBook() {
@@ -41,6 +44,17 @@ const ExchangePage = () => {
                 }
             </section>
         ),
+        wishlist: (
+            <section className={'grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pt-4 mx-auto'}>
+                {
+                    authUser.wishlist.map((book) => {
+                        return (
+                            <BookCardWithMarks key={book._id} book={book} openModal={openModal} compact/>
+                        )
+                    })
+                }
+            </section>
+        ),
 
     }
     return (
@@ -53,8 +67,8 @@ const ExchangePage = () => {
                         <MinusIcon className="rotate-90"/>
                         <LayoutListIcon/>
                     </button>
-                    <button className="btn rounded-[20px] px-3 ">
-                        <PlusIcon onClick={handleCreateBook}/>
+                    <button onClick={handleCreateBook} className="btn rounded-[20px] px-3 ">
+                        <PlusIcon/>
                     </button>
 
                 </div>
@@ -66,6 +80,12 @@ const ExchangePage = () => {
                             className={`btn btn-outline max-w-[200px] rounded-[12px] px-4 ${activeTab === "myBooks" ? "btn-active" : ""}`}
                             onClick={() => setActiveTab('myBooks')}>
                             Мои книги
+                        </button>
+
+                        <button
+                            className={`btn btn-outline max-w-[200px] rounded-[12px] px-4 ${activeTab === "wishlist" ? "btn-active" : ""}`}
+                            onClick={() => setActiveTab('wishlist')}>
+                            Список желаний
                         </button>
 
                     </div>
@@ -84,7 +104,7 @@ const ExchangePage = () => {
                 >
                     <div className="fixed inset-0 bg-black opacity-50"></div>
                     <div
-                        className="relative bg-white p-6 rounded-lg shadow-lg z-50 w-[800px] h-[850px] flex flex-col items-center px-10"
+                        className="relative bg-white py-6 rounded-lg shadow-lg z-50  h-[850px] flex flex-col items-center px-10 w-[40%]"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="flex w-full justify-between items-center mb-4">

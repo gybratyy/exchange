@@ -2,7 +2,7 @@ import {Link} from 'react-router-dom'
 import {Button} from "@mui/material"; // Assuming you're using Material UI Button, adjust if not.
 import {useBookStore} from "../store/useBookStore.js";
 
-export const BookCardWithMarks = ({book, openModal}) => {
+export const BookCardWithMarks = ({book, openModal, compact = false}) => {
     const {image, author, title, _id, type} = book;
 
 
@@ -27,7 +27,7 @@ export const BookCardWithMarks = ({book, openModal}) => {
     };
 
     return (
-        <div className='w-full grid grid-rows-12'>
+        <div className={`w-full grid ${compact ? 'grid-rows-10' : 'grid-rows-12'}`}>
             <div className='relative mb-2 row-span-8'>
                 <img
                     src={image || 'https://via.placeholder.com/230x320?text=No+Image'}
@@ -54,11 +54,14 @@ export const BookCardWithMarks = ({book, openModal}) => {
                 </div>
 
             </div>
-            <div className="row-span-2">
-                <Button onClick={handleClick} variant="outlined" size="small" fullWidth>
-                    Редактировать
-                </Button>
-            </div>
+            {!compact && (
+                <div className="row-span-2">
+                    <Button onClick={handleClick} variant="outlined" size="small" fullWidth>
+                        Редактировать
+                    </Button>
+                </div>
+            )}
+
         </div>
     );
 };

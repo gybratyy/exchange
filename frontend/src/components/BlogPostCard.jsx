@@ -1,13 +1,32 @@
-import {CalendarDays, ThumbsDown, ThumbsUp} from "lucide-react";
+import {CalendarDays, Eye, ThumbsDown, ThumbsUp} from "lucide-react";
 import {formatDate} from "../lib/utils.js";
 
 
-export const BlogPostCard = ({post, interact, authUser}) => {
+export const BlogPostCard = ({post, interact, authUser, compact = false}) => {
+    if (compact) {
+        return (
+            <div className="bg-white shadow-lg rounded-xl transition-all duration-300 hover:shadow-2xl h-25 ">
+                <div className="flex flex-col gap-4 p-4">
+                    <h2 className="transition-colors">
+                        <a href={`/blog/${post._id}`} className="hover:underline">{post.title}</a>
+                    </h2>
+
+                    <div className="flex gap-1">
+                        <Eye/>
+                        <p>{post.views && post.views}</p>
+                    </div>
+
+                </div>
+            </div>
+        )
+    }
 
 
     return (
-        <div className="bg-white shadow-lg rounded-xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
-            <div className="p-6">
+        <div
+            className="bg-white shadow-lg rounded-xl overflow-hidden transition-all duration-300 hover:shadow-2xl p-6 flex flex-col justify-between">
+
+            <div>
                 <div className="flex items-center mb-3">
                     <img
                         src={post.author.profilePic}
@@ -46,6 +65,7 @@ export const BlogPostCard = ({post, interact, authUser}) => {
                 <p className="text-gray-600 text-sm leading-relaxed mb-4 h-40 overflow-hidden  overflow-ellipsis">
                     {post.text}
                 </p>
+            </div>
 
                 <div className="flex justify-between items-center text-sm text-gray-500">
                     <div className="flex items-center space-x-4">
@@ -73,7 +93,7 @@ export const BlogPostCard = ({post, interact, authUser}) => {
                         Читать все
                     </a>
                 </div>
-            </div>
+
         </div>
     );
 };

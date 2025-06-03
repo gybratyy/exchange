@@ -1,19 +1,21 @@
 import express from 'express';
-import { protectRoute } from '../middleware/auth.middleware.js';
+import {protectRoute} from '../middleware/auth.middleware.js';
 import {
-    getAllBooks,
-    getBookById,
-    createCategory,
-    createBook,
-    updateBook,
-    getMyBooks,
-    getCategories,
-    deleteBook,
     addReview,
     addView,
-    enableBook,
+    createBook,
+    createCategory,
+    deleteBook,
     disableBook,
-    getBooksByCategory
+    enableBook,
+    getAllBooks,
+    getBookById,
+    getBooksByCategory,
+    getCategories,
+    getMyBooks,
+    getSimilarBooks,
+    toggleWishlist,
+    updateBook
 } from '../controllers/book.controller.js';
 
 const router = express.Router();
@@ -31,10 +33,12 @@ router.post('/:bookId/disable', protectRoute, disableBook);
 
 router.get('/', getAllBooks);
 
-router.get('/:id', getBookById);
+router.get('/:bookId', getBookById);
 router.get('/:bookId/view', addView);
+router.get('/:bookId/wishlist', protectRoute, toggleWishlist);
+router.get('/:bookId/similar', getSimilarBooks);
 router.get('/category/:categoryId', getBooksByCategory);
-router.post('/update/:id', protectRoute, updateBook);
-router.delete('/:id', protectRoute, deleteBook);
+router.post('/update/:bookId', protectRoute, updateBook);
+router.delete('/:bookId', protectRoute, deleteBook);
 
 export default router;

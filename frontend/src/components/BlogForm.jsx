@@ -2,10 +2,10 @@ import {useEffect, useRef, useState} from 'react';
 import {useBlogStore} from '../store/useBlogStore';
 import {useBookStore} from '../store/useBookStore';
 import toast from 'react-hot-toast';
-import {ChevronDown, UploadCloud, XCircle} from 'lucide-react';
+import {ChevronDown, Loader, UploadCloud, XCircle} from 'lucide-react';
 
 export const BlogForm = ({closeModal}) => {
-    const {createBlog} = useBlogStore();
+    const {createBlog, blogUpdating} = useBlogStore();
     const {categories: availableCategoriesFromStore, getCategories} = useBookStore();
 
     const [title, setTitle] = useState('');
@@ -86,16 +86,10 @@ export const BlogForm = ({closeModal}) => {
         };
 
         try {
-            const result = await createBlog(newBlogData);
-            if (result && (result.success || !result.error || result.data)) {
-                toast.success('Блог успешно создан!');
-                closeModal();
-            } else {
-                toast.error(result?.error || 'Не удалось создать блог.');
-            }
+            await createBlog(newBlogData);
+            closeModal();
         } catch (error) {
             console.error("Error creating blog:", error);
-            toast.error('Ошибка при создании блога.');
         }
     };
 
@@ -232,7 +226,7 @@ export const BlogForm = ({closeModal}) => {
                     type="submit"
                     className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                    Создать блог
+                    {blogUpdating ? <Loader className="animate-spin size-4"/> : 'Создать блог'}
                 </button>
             </div>
         </form>

@@ -20,7 +20,6 @@ export const useBookStore = create((set, get) => ({
         try {
             const res = await axiosInstance.get(`/books/${id}`);
             set({book: res.data});
-            get().getSimilarBooks();
         } catch (error) {
             toast.error(error.response?.data?.message || "Failed to fetch book");
             throw error;
@@ -71,13 +70,25 @@ export const useBookStore = create((set, get) => ({
             set({isUpdatingBook: false});
         }
     },
-    getSimilarBooks: () => {
-        const {book, books} = get();
-        const categories = book.categories || [];
-        const filteredBooks = books.filter((b) => {
-            return b._id !== book._id && b.categories.some((c) => categories.includes(c));
-        });
-        set({similarBooks: filteredBooks});
+    getSimilarBooks: async (bookId) => {
+        set({isBookLoading: true});
+        try {
+
+            if (!bookId) return;
+            axiosInstance.get(`/books/${bookId}/similar`)
+                .then((res) => {
+                    set({similarBooks: res.data});
+                })
+                .catch((error) => {
+                    toast.error(error.response?.data?.message || "Failed to fetch similar books");
+                })
+                .finally(() => {
+                    set({isBookLoading: false});
+                });
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Failed to fetch similar books");
+            throw error;
+        }
     },
     getMyBooks: async () => {
         set({isBooksLoading: true});
@@ -126,4 +137,5 @@ export const useBookStore = create((set, get) => ({
             throw error;
         }
     },
+
 }));

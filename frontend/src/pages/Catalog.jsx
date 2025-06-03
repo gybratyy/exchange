@@ -184,7 +184,6 @@ export default function Catalog() {
         return (
             <div className="flex items-center justify-center h-screen">
                 <Loader className="size-10 animate-spin"/>
-                <p className="ml-2 text-slate-600">Загрузка книг...</p>
             </div>
         );
     }
