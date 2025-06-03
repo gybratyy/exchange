@@ -2,6 +2,7 @@ import {create} from "zustand";
 import {axiosInstance} from "../lib/axios.js";
 import toast from "react-hot-toast";
 import {io} from "socket.io-client";
+import {useExchangeStore} from "./useExchangeStore.js"; // Import the new store
 
 const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
 
@@ -13,13 +14,12 @@ export const useAuthStore = create((set, get) => ({
   isCheckingAuth: true,
   onlineUsers: [],
   socket: null,
-  preferences:{},
+  preferences: {},
   isFillingPreferences: false,
 
   checkAuth: async () => {
     try {
       const res = await axiosInstance.get("/auth/check");
-
       set({ authUser: res.data });
       set({ preferences: res.data.preferences });
       get().connectSocket();
@@ -52,7 +52,6 @@ export const useAuthStore = create((set, get) => ({
       set({ authUser: res.data });
       set({preferences: res.data.preferences});
       toast.success("Logged in successfully");
-
       get().connectSocket();
     } catch (error) {
       toast.error(error.response.data.message);
@@ -64,9 +63,9 @@ export const useAuthStore = create((set, get) => ({
   logout: async () => {
     try {
       await axiosInstance.post("/auth/logout");
-      set({ authUser: null });
-      toast.success("Logged out successfully");
       get().disconnectSocket();
+      set({authUser: null, socket: null, onlineUsers: []});
+      toast.success("Logged out successfully");
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -92,13 +91,13 @@ export const useAuthStore = create((set, get) => ({
       const res = await axiosInstance.post("/auth/update-preferences", data);
       set({ preferences: res.data.user.preferences });
     } catch (error) {
-        console.log("Error in filling preferences:", error);
-        toast.error(error.response.data.message);
+      console.log("Error in filling preferences:", error);
+      toast.error(error.response.data.message);
     } finally {
-        set({ isFillingPreferences: false });
-        toast.success("Preferences updated successfully");
+      set({isFillingPreferences: false});
+      toast.success("Preferences updated successfully");
     }
-    },
+  },
 
   toggleWishlist: async (bookId) => {
     try {
@@ -109,27 +108,49 @@ export const useAuthStore = create((set, get) => ({
       toast.error(error.response?.data?.message || "Failed to toggle wishlist");
       throw error;
     }
-
   },
 
   connectSocket: () => {
-    const { authUser } = get();
-    if (!authUser || get().socket?.connected) return;
+    const {authUser, socket: currentSocket} = get();
+    if (!authUser || currentSocket?.connected) return;
 
-    const socket = io(BASE_URL, {
+    const newSocket = io(BASE_URL, {
       query: {
         userId: authUser._id,
       },
     });
-    socket.connect();
 
-    set({ socket: socket });
+    newSocket.connect();
+    set({socket: newSocket});
 
-    socket.on("getOnlineUsers", (userIds) => {
+    newSocket.on("getOnlineUsers", (userIds) => {
       set({ onlineUsers: userIds });
     });
+
+    newSocket.on("new_exchange_proposal", (newExchangeData) => {
+      console.log("Socket event: new_exchange_proposal", newExchangeData);
+      useExchangeStore.getState().handleNewExchangeProposal(newExchangeData);
+    });
+
+    newSocket.on("exchange_status_updated", (updatedExchangeData) => {
+      console.log("Socket event: exchange_status_updated", updatedExchangeData);
+      useExchangeStore.getState().handleExchangeStatusUpdated(updatedExchangeData);
+    });
+
+    newSocket.on("connect_error", (err) => {
+      console.error("Socket connection error:", err.message);
+      toast.error("Socket connection error. Trying to reconnect...");
+    });
   },
+
   disconnectSocket: () => {
-    if (get().socket?.connected) get().socket.disconnect();
+    const currentSocket = get().socket;
+    if (currentSocket?.connected) {
+      currentSocket.off("getOnlineUsers");
+      currentSocket.off("new_exchange_proposal");
+      currentSocket.off("exchange_status_updated");
+      currentSocket.disconnect();
+    }
+    set({socket: null, onlineUsers: []});
   },
 }));

@@ -75,7 +75,7 @@ const bookSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["available", "reserved"],
+        enum: ["available", "reserved", "in_exchange", "exchanged"],
         default: "available",
         required: true
     }
