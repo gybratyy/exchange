@@ -33,11 +33,10 @@ const Chat = () => {
 
 
     return (
-        <div className="h-screen bg-base-200">
-            <div className="flex items-center justify-center pt-20 px-4">
-                <div
-                    className="bg-base-100 rounded-lg shadow-xl w-full max-w-6xl h-[calc(100vh-8rem)]"> {/* Increased shadow */}
-                    <div className="flex h-full rounded-lg overflow-hidden">
+        <div className="fixed inset-0 ">
+            <div className="flex items-center justify-center pt-20 px-4 h-full">
+                <div className=" rounded-lg shadow-xl w-[80%] h-[calc(100vh-8rem)]">
+                    <div className="flex gap-3 h-full rounded-lg overflow-hidden">
                         <Sidebar />
                         {!selectedUser ? <NoChatSelected /> : <ChatContainer />}
                     </div>
@@ -45,5 +44,6 @@ const Chat = () => {
             </div>
         </div>
     );
+
 };
 export default Chat;
