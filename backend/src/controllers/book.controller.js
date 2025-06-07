@@ -110,7 +110,7 @@ export const createBook = async (req, res) =>{
 
 export const updateBook = async (req, res) => {
     const {bookId} = req.params;
-    const { title, description, author, publishedDate, language, categories, image, type, price, productType, condition } = req.body;
+    const { title, description, author, publishedDate, language, categories, image, type, price, productType, condition, status, isActive } = req.body;
 
 
 
@@ -129,6 +129,8 @@ export const updateBook = async (req, res) => {
                 price,
                 productType,
                 condition,
+                status,
+                isActive
             },
             { new: true }
         );
