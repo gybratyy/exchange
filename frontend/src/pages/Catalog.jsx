@@ -3,6 +3,7 @@ import {Filter, Loader, Search} from 'lucide-react';
 import {useBookStore} from "../store/useBookStore.js";
 import {SidebarFilter} from "../components/SidebarFilter.jsx";
 import {ProductGrid} from "../components/ProductGrid.jsx";
+import {useAuthStore} from "../store/useAuthStore.js";
 
 const initialFiltersState = {
     productTypes: [],
@@ -19,6 +20,7 @@ const initialFiltersState = {
 
 export default function Catalog() {
     const { books, getBooks, isBooksLoading } = useBookStore();
+    const {authUser} = useAuthStore();
     const [filters, setFilters] = useState(initialFiltersState);
     const [dynamicFilterOptions, setDynamicFilterOptions] = useState({
         productTypes: [],
@@ -139,11 +141,13 @@ export default function Catalog() {
         return books.filter((product) => {
             const { productTypes, categories, languages, types, bookRating, country, city, priceRange, conditions, searchTerm } = filters;
 
+            // Exclude products owned by the current user
+            if (typeof authUser !== 'undefined' && authUser && product.owner?._id === authUser._id) return false;
+
             if (productTypes.length > 0 && !productTypes.includes(product.productType)) return false;
             if (categories.length > 0 && !product.categories.some(cat => categories.includes(typeof cat === 'string' ? cat : cat.name))) return false;
             if (languages.length > 0 && !languages.includes(product.language)) return false;
             if (types.length > 0 && !types.includes(product.type)) return false;
-
 
             if (bookRating > 0) {
                 let averageProductRating = 0;
@@ -153,7 +157,6 @@ export default function Catalog() {
                 }
                 if (averageProductRating < bookRating) return false;
             }
-
 
             if (country && product.owner?.country !== country) return false;
             if (city && product.owner?.city !== city) return false;
@@ -168,7 +171,6 @@ export default function Catalog() {
                 return false;
             }
 
-
             if (conditions.length > 0 && !conditions.includes(product.condition)) return false;
 
             if (searchTerm &&
@@ -178,8 +180,7 @@ export default function Catalog() {
             }
             return true;
         });
-    }, [books, filters, isBooksLoading, dynamicFilterOptions.maxPrice]);
-
+    }, [books, filters, isBooksLoading, dynamicFilterOptions.maxPrice, authUser]);
     if (isBooksLoading) {
         return (
             <div className="flex items-center justify-center h-screen">
