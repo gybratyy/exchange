@@ -3,8 +3,10 @@ import {useBlogStore} from '../store/useBlogStore';
 import {useBookStore} from '../store/useBookStore';
 import toast from 'react-hot-toast';
 import {ChevronDown, Loader, UploadCloud, XCircle} from 'lucide-react';
+import {useTranslation} from "react-i18next";
 
 export const BlogForm = ({closeModal}) => {
+    const {t} = useTranslation();
     const {createBlog, blogUpdating} = useBlogStore();
     const {categories: availableCategoriesFromStore, getCategories} = useBookStore();
 
@@ -28,14 +30,14 @@ export const BlogForm = ({closeModal}) => {
         const file = event.target.files[0];
         if (file) {
             if (file.size > 5 * 1024 * 1024) { // 5MB limit
-                toast.error('Размер файла не должен превышать 5 МБ.');
+                toast.error(t('Размер файла не должен превышать 5 МБ.'));
                 if (fileInputRef.current) {
                     fileInputRef.current.value = "";
                 }
                 return;
             }
             if (!file.type.startsWith('image/')) {
-                toast.error('Пожалуйста, выберите файл изображения.');
+                toast.error(t('Пожалуйста, выберите файл изображения.'));
                 if (fileInputRef.current) {
                     fileInputRef.current.value = "";
                 }
@@ -72,7 +74,7 @@ export const BlogForm = ({closeModal}) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!title.trim() || !text.trim()) {
-            toast.error('Заголовок и текст обязательны для заполнения.');
+            toast.error(t('Заголовок и текст обязательны для заполнения.'));
             return;
         }
 
@@ -99,7 +101,7 @@ export const BlogForm = ({closeModal}) => {
         <form onSubmit={handleSubmit} className="space-y-6 p-1">
             <div>
                 <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-                    Заголовок <span className="text-red-500">*</span>
+                    {t("Заголовок")} <span className="text-red-500">*</span>
                 </label>
                 <input
                     type="text"
@@ -114,7 +116,7 @@ export const BlogForm = ({closeModal}) => {
 
             <div>
                 <label htmlFor="text" className="block text-sm font-medium text-gray-700 mb-1">
-                    Текст блога <span className="text-red-500">*</span>
+                    {t("Текст блога")} <span className="text-red-500">*</span>
                 </label>
                 <textarea
                     name="text"
@@ -129,7 +131,7 @@ export const BlogForm = ({closeModal}) => {
 
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Изображение (необязательно, до 5МБ)
+                    {t("Изображение(необязательно, до 5МБ)")}
                 </label>
                 <div className="mt-1 flex flex-col items-center">
                     <div
@@ -138,7 +140,7 @@ export const BlogForm = ({closeModal}) => {
                     >
                         {imagePreview ? (
                             <>
-                                <img src={imagePreview} alt="Предпросмотр"
+                                <img src={imagePreview} alt={t("Предпросмотр")}
                                      className="max-h-full max-w-full object-contain rounded-md"/>
                                 <button
                                     type="button"
@@ -155,8 +157,8 @@ export const BlogForm = ({closeModal}) => {
                         ) : (
                             <div className="text-center text-gray-400">
                                 <UploadCloud size={40} className="mx-auto mb-2"/>
-                                <p className="text-sm">Нажмите, чтобы загрузить</p>
-                                <p className="text-xs">PNG, JPG, GIF до 5МБ</p>
+                                <p className="text-sm">{t("Нажмите, чтобы загрузить")}</p>
+                                <p className="text-xs">{t("PNG, JPG, GIF до 5МБ")}</p>
                             </div>
                         )}
                     </div>
@@ -174,7 +176,7 @@ export const BlogForm = ({closeModal}) => {
 
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Категории (необязательно)
+                    {t("Категории(необязательно)")}
                 </label>
                 <div className="relative">
                     <button
@@ -183,7 +185,7 @@ export const BlogForm = ({closeModal}) => {
                         onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
                     >
                         <span className={selectedCategories.length > 0 ? "text-gray-900" : "text-gray-400"}>
-                            {selectedCategories.length > 0 ? selectedCategoryDisplayNames : 'Выберите категории'}
+                            {selectedCategories.length > 0 ? selectedCategoryDisplayNames : t('Выберите категории')}
                         </span>
                         <ChevronDown size={20}
                                      className={`text-gray-400 transition-transform ${showCategoryDropdown ? 'transform rotate-180' : ''}`}/>
@@ -207,7 +209,7 @@ export const BlogForm = ({closeModal}) => {
                                     </label>
                                 ))
                             ) : (
-                                <div className="px-3 py-2 text-sm text-gray-500">Категории не найдены</div>
+                                <div className="px-3 py-2 text-sm text-gray-500">{t("Категории не найдены")}</div>
                             )}
                         </div>
                     )}
@@ -220,13 +222,13 @@ export const BlogForm = ({closeModal}) => {
                     onClick={closeModal}
                     className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                    Отмена
+                    {t("Отмена")}
                 </button>
                 <button
                     type="submit"
                     className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                    {blogUpdating ? <Loader className="animate-spin size-4"/> : 'Создать блог'}
+                    {blogUpdating ? <Loader className="animate-spin size-4"/> : t('Создать блог')}
                 </button>
             </div>
         </form>

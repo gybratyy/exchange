@@ -23,11 +23,11 @@ const Navbar = () => {
                         </Link>
                     </div>
                     <div className="flex items-center gap-6">
-                        <Link to='/' className='text-lg leading-6'>Домашняя страница</Link>
-                        <Link to='/blog' className='text-lg leading-6'>Блог</Link>
-                        <Link to='/catalog' className='text-lg leading-6'>Каталог</Link>
-                        <Link to='/chat' className='text-lg leading-6'>Сообщения</Link>
-                        <Link to='/exchange' className='text-lg leading-6'>Обмен</Link>
+                        <Link to='/' className='text-lg leading-6'>{t('Домашняя страница')}</Link>
+                        <Link to='/blog' className='text-lg leading-6'>{t('Блог')}</Link>
+                        <Link to='/catalog' className='text-lg leading-6'>{t("Каталог")}</Link>
+                        <Link to='/chat' className='text-lg leading-6'>{t('Сообщения')}</Link>
+                        <Link to='/exchange' className='text-lg leading-6'>{t("Обмен")}</Link>
                     </div>
                     <div className="flex items-center gap-2">
                         {/* Language Switcher Dropdown */}
@@ -38,13 +38,13 @@ const Navbar = () => {
                             <ul tabIndex={0}
                                 className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                                 <li>
-                                    <button onClick={() => changeLanguage('ru')}>Русский</button>
+                                    <button onClick={() => changeLanguage('ru')}>{t('Русский')}</button>
                                 </li>
                                 <li>
-                                    <button onClick={() => changeLanguage('en')}>English</button>
+                                    <button onClick={() => changeLanguage('en')}>{t("English")}</button>
                                 </li>
                                 <li>
-                                    <button onClick={() => changeLanguage('kz')}>Қазақша</button>
+                                    <button onClick={() => changeLanguage('kz')}>{t("Қазақша")}</button>
                                 </li>
                             </ul>
                         </div>
@@ -70,7 +70,7 @@ const Navbar = () => {
 
                                 <button className="flex gap-2 items-center" onClick={logout}>
                                     <LogOut className="size-5"/>
-                                    <span className="hidden sm:inline">Выйти</span>
+                                    <span className="hidden sm:inline">{t("Выйти")}</span>
                                 </button>
                             </>
                         ):(
@@ -82,7 +82,7 @@ const Navbar = () => {
               `}
                             >
                                 <LogIn className="w-4 h-4"/>
-                                <span className="hidden sm:inline">Зайти</span>
+                                <span className="hidden sm:inline">{t("Зайти")}</span>
                             </Link>
                         )}
                     </div>

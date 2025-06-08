@@ -4,9 +4,11 @@ import {useBlogStore} from "../store/useBlogStore.js";
 import {BlogPostCard} from "../components/BlogPostCard.jsx";
 import {useAuthStore} from "../store/useAuthStore.js";
 import {BlogForm} from "../components/BlogForm.jsx";
+import {useTranslation} from "react-i18next";
 
 
 const BlogsPage = () => {
+    const {t} = useTranslation();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [viewMode, setViewMode] = useState('list');
     const {getAllBlogs, blogs, blogsLoading, blog} = useBlogStore();
@@ -35,14 +37,13 @@ const BlogsPage = () => {
             </div>
         );
     }
-    console.log(blogs)
 
     return (
         <div className="min-h-screen w-[80%] py-6 mx-auto grid grid-cols-12 gap-10  ">
             <div className="col-span-9">
 
                 <div className="mb-8  w-full flex items-end justify-between gap-4">
-                    <h1 className='text-5xl font-medium'>Статьи</h1>
+                    <h1 className='text-5xl font-medium'>{t("Статьи")}</h1>
 
                     <div className="flex bg-white p-1 rounded-lg shadow gap-1">
                         <button
@@ -62,7 +63,7 @@ const BlogsPage = () => {
                         <button
                             onClick={openModal}
                             className="bg-indigo-600 text-white px-4 py-2.5 rounded-lg shadow hover:bg-indigo-700 transition-colors flex items-center text-sm font-medium">
-                            <Plus size={18} className="mr-1.5"/> Добавить
+                            <Plus size={18} className="mr-1.5"/> {t("Добавить")}
                         </button>
                     </div>
 
@@ -79,14 +80,14 @@ const BlogsPage = () => {
                 ) : (
                     <div className="text-center py-12">
                         <MessageSquare size={48} className="mx-auto text-gray-400 mb-4"/>
-                        <p className="text-xl text-gray-500">Пока нет постов в этой категории.</p>
+                        <p className="text-xl text-gray-500">{t("Пока нет постов в этой категории.")}</p>
                     </div>
                 )}
 
 
             </div>
             <div className="col-span-3">
-                <h1 className='font-medium text-2xl leading-6'>Читают сейчас</h1>
+                <h1 className='font-medium text-2xl leading-6 mb-2'>{t("Читают сейчас")}</h1>
                 {blogs.length > 0 ? (
                     <div
                         className={'flex flex-col gap-6'}>
@@ -98,7 +99,7 @@ const BlogsPage = () => {
                 ) : (
                     <div className="text-center py-12">
                         <MessageSquare size={48} className="mx-auto text-gray-400 mb-4"/>
-                        <p className="text-xl text-gray-500">Пока нет постов в этой категории.</p>
+                        <p className="text-xl text-gray-500">{t("Пока нет постов в этой категории.")}</p>
                     </div>
                 )}
             </div>
@@ -108,7 +109,7 @@ const BlogsPage = () => {
                     <div
                         className="bg-white rounded-lg shadow-xl p-6 sm:p-8 w-full max-w-2xl max-h-[90vh] flex flex-col transform transition-all duration-300 ease-in-out scale-100 opacity-100">
                         <div className="flex justify-between items-center mb-6 pb-3 border-b border-gray-200">
-                            <h2 className="text-xl font-semibold text-gray-800">Создать новый пост</h2>
+                            <h2 className="text-xl font-semibold text-gray-800">{t("Создать новый пост")}</h2>
                             <button
                                 onClick={closeModal}
                                 className="text-gray-400 hover:text-gray-600 transition-colors"
