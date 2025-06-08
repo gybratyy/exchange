@@ -19,12 +19,16 @@ export const BookForm = ({closeModal}) => {
     const [imageBase64, setImageBase64] = useState('');
     const [type, setType] = useState('');
     const [selectedCategories, setSelectedCategories] = useState([]);
+    const [status, setStatus] = useState('');
+    const [isActive, setIsActive] = useState(true);
 
 
     const fileInputRef = useRef(null);
     const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
     const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
     const [showTypeDropdown, setShowTypeDropdown] = useState(false);
+    const [showStatusDropdown, setShowStatusDropdown] = useState(false);
+    const [showIsActiveDropdown, setShowIsActiveDropdown] = useState(false);
 
     const languageOptions = [{label: 'Қазақша'}, {label: 'Русский'}, {label: 'English'}];
     const typeOptions = [
@@ -33,6 +37,18 @@ export const BookForm = ({closeModal}) => {
         {value: 'any', label: 'На обмен / продажу'},
         {value: 'forFree', label: 'Бесплатно'},
     ];
+
+    const statusOptions = [
+        {value: "available", label: 'Доступно'},
+        {value: "reserved", label: 'Зарезервировано'},
+        {value: "in_exchange", label: 'В обмене'},
+        {value: "exchanged", label: 'Обменено'},
+    ]
+
+    const isActiveOptions = [
+        {value: true, label: 'Активно'},
+        {value: false, label: 'Неактивно'},
+    ]
 
 
     useEffect(() => {
@@ -47,8 +63,11 @@ export const BookForm = ({closeModal}) => {
             setImageBase64(book.image || '');
             setImagePreview(book.image || '');
             setType(book.type || '');
+            setStatus(book.status || 'available');
+            setIsActive(book.isActive !== undefined ? book.isActive : true);
 
-
+            console.log("book categories:", book.categories);
+            console.log("categories from store:", availableCategoriesFromStore);
             if (book.categories && availableCategoriesFromStore.length > 0) {
                 const preSelectedCategories = availableCategoriesFromStore.filter(catStore =>
                     (book.categories || []).some(bookCat => typeof bookCat === 'string' ? bookCat === catStore.name : bookCat._id === catStore._id)
@@ -70,6 +89,8 @@ export const BookForm = ({closeModal}) => {
             setImageBase64('');
             setType('');
             setSelectedCategories([]);
+            setStatus('available');
+            setIsActive(true);
         }
     }, [book, availableCategoriesFromStore]);
 
@@ -126,7 +147,7 @@ export const BookForm = ({closeModal}) => {
             return;
         }
 
-        const categoryIdsToSend = selectedCategories.map(c => c._id);
+        const categoryIdsToSend = selectedCategories.map(c => c.name);
 
         const bookDataPayload = {
             title,
@@ -138,6 +159,8 @@ export const BookForm = ({closeModal}) => {
             image: imageBase64 || (book && book.image ? book.image : undefined),
             type,
             categories: categoryIdsToSend,
+            status,
+            isActive
         };
 
         try {
@@ -153,7 +176,7 @@ export const BookForm = ({closeModal}) => {
             console.error("Error submitting book form:", error);
             toast.error(error.response?.data?.message || 'Ошибка при сохранении книги.');
         }
-    }, [title, author, description, language, publishedDate, price, imageBase64, type, selectedCategories, book, updateBook, createBook, closeModal]);
+    }, [title, author, description, language, publishedDate, price, imageBase64, type, selectedCategories, book, updateBook, createBook, closeModal, isActive, status]);
 
     const selectedCategoryDisplayNames = selectedCategories.map(c => c.name).join(', ');
 
@@ -268,6 +291,68 @@ export const BookForm = ({closeModal}) => {
                                          onClick={() => {
                                              setType(opt.value);
                                              setShowTypeDropdown(false);
+                                         }}
+                                         className="px-3 py-1.5  text-gray-700 hover:bg-gray-100 cursor-pointer"
+                                    >
+                                        {opt.label}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+                <div>
+                    <label className="block  font-medium text-gray-700 mb-0.5">Статус книги</label>
+                    <div className="relative">
+                        <button type="button"
+                                className="mt-0.5 block w-full px-2.5 py-1.5 border border-gray-300 rounded-md shadow-sm bg-white text-left focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm: flex justify-between items-center"
+                                onClick={() => setShowStatusDropdown(!showStatusDropdown)}
+                        >
+                            <span className={status ? "text-gray-900" : "text-gray-400"}>
+                                {(statusOptions.find(opt => opt.value === status) || {label: 'Выберите статус'}).label}
+                            </span>
+                            <ChevronDown size={16}
+                                         className={`text-gray-400 transition-transform ${showStatusDropdown ? 'transform rotate-180' : ''}`}/>
+                        </button>
+                        {showStatusDropdown && (
+                            <div
+                                className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-y-auto">
+                                {statusOptions.map(opt => (
+                                    <div key={opt.value}
+                                         onClick={() => {
+                                             setStatus(opt.value);
+                                             setShowStatusDropdown(false);
+                                         }}
+                                         className="px-3 py-1.5  text-gray-700 hover:bg-gray-100 cursor-pointer"
+                                    >
+                                        {opt.label}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+                <div>
+                    <label className="block  font-medium text-gray-700 mb-0.5">Доступность</label>
+                    <div className="relative">
+                        <button type="button"
+                                className="mt-0.5 block w-full px-2.5 py-1.5 border border-gray-300 rounded-md shadow-sm bg-white text-left focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm: flex justify-between items-center"
+                                onClick={() => setShowIsActiveDropdown(!showIsActiveDropdown)}
+                        >
+                            <span className={isActive !== null ? "text-gray-900" : "text-gray-400"}>
+                                {(isActiveOptions.find(opt => opt.value === isActive) || {label: 'Выберите доступность'}).label}
+                            </span>
+                            <ChevronDown size={16}
+                                         className={`text-gray-400 transition-transform ${showIsActiveDropdown ? 'transform rotate-180' : ''}`}/>
+                        </button>
+                        {showIsActiveDropdown && (
+                            <div
+                                className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-y-auto">
+                                {isActiveOptions.map(opt => (
+                                    <div key={opt.value}
+                                         onClick={() => {
+                                             setIsActive(opt.value);
+                                             setShowIsActiveDropdown(false);
                                          }}
                                          className="px-3 py-1.5  text-gray-700 hover:bg-gray-100 cursor-pointer"
                                     >

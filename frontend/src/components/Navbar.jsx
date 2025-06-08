@@ -1,9 +1,15 @@
 import {Link} from "react-router-dom";
 import {useAuthStore} from "../store/useAuthStore";
-import {LogIn, LogOut, Settings, User} from "lucide-react";
+import {Languages, LogIn, LogOut, Settings} from "lucide-react";
+import {useTranslation} from "react-i18next";
 
 const Navbar = () => {
     const {logout, authUser} = useAuthStore();
+    const {t, i18n} = useTranslation();
+
+    const changeLanguage = (lng) => {
+        i18n.changeLanguage(lng).then(() => console.log(lng));
+    };
 
     return (
         <header
@@ -22,6 +28,27 @@ const Navbar = () => {
                         <Link to='/catalog' className='text-lg leading-6'>Каталог</Link>
                         <Link to='/chat' className='text-lg leading-6'>Сообщения</Link>
                         <Link to='/exchange' className='text-lg leading-6'>Обмен</Link>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        {/* Language Switcher Dropdown */}
+                        <div className="dropdown dropdown-end">
+                            <button tabIndex={0} className="btn btn-ghost btn-circle">
+                                <Languages/>
+                            </button>
+                            <ul tabIndex={0}
+                                className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                                <li>
+                                    <button onClick={() => changeLanguage('ru')}>Русский</button>
+                                </li>
+                                <li>
+                                    <button onClick={() => changeLanguage('en')}>English</button>
+                                </li>
+                                <li>
+                                    <button onClick={() => changeLanguage('kz')}>Қазақша</button>
+                                </li>
+                            </ul>
+                        </div>
+                        {/* ... rest of your navbar (settings, profile, etc.) ... */}
                     </div>
                     <div className="flex items-center gap-2">
                         <Link
