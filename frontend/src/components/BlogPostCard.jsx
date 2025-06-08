@@ -1,8 +1,9 @@
 import {CalendarDays, Eye, ThumbsDown, ThumbsUp} from "lucide-react";
 import {formatDate} from "../lib/utils.js";
-
+import {useTranslation} from "react-i18next";
 
 export const BlogPostCard = ({post, interact, authUser, compact = false}) => {
+    const {t} = useTranslation();
     if (compact) {
         return (
             <div className="bg-white shadow-lg rounded-xl transition-all duration-300 hover:shadow-2xl h-25 ">
@@ -90,7 +91,7 @@ export const BlogPostCard = ({post, interact, authUser, compact = false}) => {
                         href={`/blog/${post._id}`}
                         className="text-indigo-600 hover:text-indigo-800 font-medium text-sm"
                     >
-                        Читать все
+                        {t("Читать все")}
                     </a>
                 </div>
 
