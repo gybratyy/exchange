@@ -23,6 +23,7 @@ import Chat from "./pages/Chat.jsx";
 import Setup from "./pages/Setup.jsx";
 import BlogPage from "./pages/BlogPage.jsx";
 import BlogsPage from "./pages/BlogsPage.jsx";
+import "./i18n";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();

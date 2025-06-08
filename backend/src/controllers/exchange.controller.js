@@ -62,10 +62,10 @@ export const initiateExchange = async (req, res) => {
         await newExchange.save();
 
         const populatedExchange = await Exchange.findById(newExchange._id)
-            .populate("initiatorUser", "fullName profilePic email")
-            .populate("receiverUser", "fullName profilePic email")
-            .populate("initiatorBook", "title image author")
-            .populate("receiverBook", "title image author");
+            .populate("initiatorUser", "_id fullName profilePic email")
+            .populate("receiverUser", "_id fullName profilePic email")
+            .populate("initiatorBook", "_id title image author")
+            .populate("receiverBook", "_id title image author");
 
 
         const receiverSocketId = getReceiverSocketId(receiverBook.owner.toString());

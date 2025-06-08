@@ -1,12 +1,13 @@
 import {useBookStore} from "../store/useBookStore.js";
 import {useEffect} from "react";
-import { Loader} from "lucide-react";
-import {RecentBooksSection, RecommendationSection,CatalogCTASection} from "../sections/homepage";
+import {Loader} from "lucide-react";
+import {CatalogCTASection, RecentBooksSection, RecommendationSection} from "../sections/homepage";
+import {useTranslation} from "react-i18next";
 
 
 const HomePage = () => {
   const { getBooks, isBooksLoading} = useBookStore();
-
+    const {t} = useTranslation();
   useEffect(() => {
     getBooks()
   }, [getBooks]);

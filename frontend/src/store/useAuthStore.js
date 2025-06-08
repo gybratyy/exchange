@@ -2,7 +2,8 @@ import {create} from "zustand";
 import {axiosInstance} from "../lib/axios.js";
 import toast from "react-hot-toast";
 import {io} from "socket.io-client";
-import {useExchangeStore} from "./useExchangeStore.js"; // Import the new store
+import {useExchangeStore} from "./useExchangeStore.js";
+import i18n from "../i18n.js";
 
 const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
 
@@ -51,7 +52,7 @@ export const useAuthStore = create((set, get) => ({
       const res = await axiosInstance.post("/auth/login", data);
       set({ authUser: res.data });
       set({preferences: res.data.preferences});
-      toast.success("Logged in successfully");
+      toast.success(i18n.t('Logged in successfully'));
       get().connectSocket();
     } catch (error) {
       toast.error(error.response.data.message);
