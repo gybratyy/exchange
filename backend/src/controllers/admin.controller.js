@@ -30,7 +30,6 @@ export const claimReport = async (req, res) => {
         }
 
         if (report.assignedModerator) {
-            // If the report is already claimed by someone else
             if (report.assignedModerator.toString() !== moderatorId.toString()) {
                 const assignedMod = await User.findById(report.assignedModerator).select('fullName');
                 return res.status(409).json({message: `Report already claimed by ${assignedMod ? assignedMod.fullName : 'another moderator'}.`});
@@ -54,9 +53,9 @@ export const claimReport = async (req, res) => {
 
 export const updateReportStatus = async (req, res) => {
     try {
+        const adminId = await User.findOne({role: 'admin'}).select('_id');
         const {reportId} = req.params;
         const {status, resolutionNotes} = req.body;
-        const moderatorId = req.user._id;
 
         const validStatuses = ["resolved", "escalated"];
         if (!validStatuses.includes(status)) {
@@ -71,7 +70,7 @@ export const updateReportStatus = async (req, res) => {
         report.status = status;
         report.resolutionNotes = resolutionNotes || '';
 
-        report.assignedModerator = report.assignedModerator || moderatorId;
+        report.assignedModerator = status === 'escalated' ? adminId : report.assignedModerator
         await report.save();
 
         res.status(200).json({message: "Report status updated.", report});
