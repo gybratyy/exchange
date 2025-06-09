@@ -1,13 +1,14 @@
 import {Link, useNavigate, useParams} from 'react-router-dom';
 import {useBookStore} from "../store/useBookStore.js";
 import {useEffect, useState} from "react";
-import {ArrowDownUpIcon, Bookmark, EllipsisIcon, Loader2, MessageSquare} from "lucide-react";
+import {ArrowDownUpIcon, Bookmark, Loader2, MessageSquare, Flag} from "lucide-react";
 import {BookExtra} from "../components/BookExtra.jsx";
 import {StaticStarRating} from "../components/StaticStarRating.jsx";
 import {useAuthStore} from "../store/useAuthStore.js";
 import {useExchangeStore} from '../store/useExchangeStore.js';
 import ExchangeModal from '../components/ExchangeModal.jsx';
 import toast from 'react-hot-toast';
+import ReportModal from "../components/ReportModal.jsx";
 
 const BookPage = () => {
     const { id } = useParams();
@@ -18,6 +19,7 @@ const BookPage = () => {
     const {setTargetBookForExchange, isLoadingInitiate} = useExchangeStore();
 
     const [isExchangeModalOpen, setIsExchangeModalOpen] = useState(false);
+    const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
     useEffect(() => {
         if (id) {
@@ -120,9 +122,15 @@ const BookPage = () => {
                                     />
                                 </button>
                             )}
-                            <button className="btn btn-ghost btn-circle rounded-[20px] px-3 ">
-                                <EllipsisIcon size={20}/>
-                            </button>
+                            {authUser && book.owner?._id !== authUser._id && (
+                                <button
+                                    onClick={() => setIsReportModalOpen(true)}
+                                    className="btn btn-ghost btn-circle text-error"
+                                    title="Report this item"
+                                >
+                                    <Flag size={20}/>
+                                </button>
+                            )}
                         </div>
 
                         <p className='pt-6 text-gray-700 text-base text-justify leading-relaxed'>{book.description}</p>
@@ -169,6 +177,13 @@ const BookPage = () => {
                     isOpen={isExchangeModalOpen}
                     onClose={() => setIsExchangeModalOpen(false)}
                     targetBook={book}
+                />
+            )}
+            {isReportModalOpen && (
+                <ReportModal
+                    resourceId={book._id}
+                    resourceType="Book"
+                    onClose={() => setIsReportModalOpen(false)}
                 />
             )}
         </>

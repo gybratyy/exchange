@@ -26,7 +26,7 @@ export const getMessages = async (req, res) => {
         { senderId: myId, receiverId: userToChatId },
         { senderId: userToChatId, receiverId: myId },
       ],
-    });
+    }).populate("senderId", "_id fullName profilePic");
 
     res.status(200).json(messages);
   } catch (error) {
@@ -43,7 +43,6 @@ export const sendMessage = async (req, res) => {
 
     let imageUrl;
     if (image) {
-      // Upload base64 image to cloudinary
       const uploadResponse = await cloudinary.uploader.upload(image);
       imageUrl = uploadResponse.secure_url;
     }
@@ -57,9 +56,16 @@ export const sendMessage = async (req, res) => {
 
     await newMessage.save();
 
+    await newMessage.populate('senderId', '_id fullName profilePic');
+
     const receiverSocketId = getReceiverSocketId(receiverId);
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("newMessage", newMessage);
+      io.to(receiverSocketId).emit("notification", {
+        type: 'message',
+        title: `New message from ${newMessage.senderId.fullName}`,
+        user: newMessage.senderId
+      });
     }
 
     res.status(201).json(newMessage);

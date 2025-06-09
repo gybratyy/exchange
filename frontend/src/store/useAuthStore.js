@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 import {io} from "socket.io-client";
 import {useExchangeStore} from "./useExchangeStore.js";
 import i18n from "../i18n.js";
+import {useNotificationStore} from "./useNotificationStore.js";
+import {useChatStore} from "./useChatStore.js";
 
 const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
 
@@ -24,6 +26,7 @@ export const useAuthStore = create((set, get) => ({
       set({ authUser: res.data });
       set({ preferences: res.data.preferences });
       get().connectSocket();
+      useExchangeStore.getState().fetchUserExchanges();
     } catch (error) {
       console.log("Error in checkAuth:", error);
       set({ authUser: null });
@@ -54,6 +57,7 @@ export const useAuthStore = create((set, get) => ({
       set({preferences: res.data.preferences});
       toast.success(i18n.t('Logged in successfully'));
       get().connectSocket();
+      useExchangeStore.getState().fetchUserExchanges();
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
@@ -126,6 +130,24 @@ export const useAuthStore = create((set, get) => ({
 
     newSocket.on("getOnlineUsers", (userIds) => {
       set({ onlineUsers: userIds });
+    });
+
+    newSocket.on("notification", (data) => {
+      useNotificationStore.getState().addNotification({
+        type: data.type,
+        message: data.title,
+        user: data.user,
+      });
+
+    });
+
+
+    newSocket.on("newMessage", (newMessage) => {
+      const {selectedUser, messages} = useChatStore.getState();
+
+      if (selectedUser?._id === newMessage.senderId._id) {
+        set(state => ({messages: [...messages, newMessage]}));
+      }
     });
 
     newSocket.on("new_exchange_proposal", (newExchangeData) => {

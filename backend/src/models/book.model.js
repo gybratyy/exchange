@@ -78,7 +78,8 @@ const bookSchema = new mongoose.Schema({
         enum: ["available", "reserved", "in_exchange", "exchanged"],
         default: "available",
         required: true
-    }
+    },
+    reports: [{type: mongoose.Schema.Types.ObjectId, ref: 'Report'}],
 
 }, { timestamps: true });
 

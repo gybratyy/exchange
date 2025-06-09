@@ -1,14 +1,13 @@
+// frontend/src/components/ChatContainer.jsx
 import {useChatStore} from "../store/useChatStore";
 import {useEffect, useRef} from "react";
-import {useLocation} from "react-router-dom";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
 import MessageSkeleton from "./skeletons/MessageSkeleton";
 import {useAuthStore} from "../store/useAuthStore";
-import {useExchangeStore} from "../store/useExchangeStore";
 import {formatMessageTime} from "../lib/utils";
 
-const ChatContainer = () => {
+const ChatContainer = ({exchangeId}) => {
     const {
         messages,
         getMessages,
@@ -18,11 +17,7 @@ const ChatContainer = () => {
         unsubscribeFromMessages,
     } = useChatStore();
     const {authUser} = useAuthStore();
-    const {fetchExchangeDetails, currentExchangeDetails, isLoadingDetails} = useExchangeStore();
-    const location = useLocation();
     const messageEndRef = useRef(null);
-
-    const exchangeIdFromState = location.state?.exchangeId;
 
     useEffect(() => {
         if (selectedUser?._id) {
@@ -36,16 +31,8 @@ const ChatContainer = () => {
         };
     }, [selectedUser?._id, getMessages, subscribeToMessages, unsubscribeFromMessages]);
 
-
     useEffect(() => {
-        if (exchangeIdFromState && (!currentExchangeDetails || currentExchangeDetails._id !== exchangeIdFromState)) {
-            fetchExchangeDetails(exchangeIdFromState);
-        }
-    }, [exchangeIdFromState, fetchExchangeDetails, currentExchangeDetails]);
-
-
-    useEffect(() => {
-        if (messageEndRef.current && messages) {
+        if (messageEndRef.current && messages.length > 0) {
             messageEndRef.current.scrollIntoView({behavior: "smooth"});
         }
     }, [messages]);
@@ -54,10 +41,10 @@ const ChatContainer = () => {
         return null;
     }
 
-    if (isMessagesLoading || (exchangeIdFromState && isLoadingDetails)) {
+    if (isMessagesLoading) {
         return (
             <div className="flex-1 flex flex-col overflow-auto">
-                <ChatHeader exchangeId={exchangeIdFromState}/>
+                <ChatHeader exchangeId={exchangeId}/>
                 <MessageSkeleton/>
                 <MessageInput/>
             </div>
@@ -66,20 +53,21 @@ const ChatContainer = () => {
 
     return (
         <div className="flex-1 flex flex-col overflow-auto border-2 rounded-xl bg-[#EAEAEA]">
-            <ChatHeader exchangeId={exchangeIdFromState}/>
+            {/* 2. Pass the prop to the ChatHeader */}
+            <ChatHeader exchangeId={exchangeId}/>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
                 {messages.map((message) => (
                     <div
                         key={message._id}
-                        className={`chat ${message.senderId === authUser._id ? "chat-end" : "chat-start"}`}
+                        className={`chat ${message.senderId?._id === authUser._id ? "chat-end" : "chat-start"}`}
                         ref={messageEndRef}
                     >
-                        <div className=" chat-image avatar">
+                        <div className="chat-image avatar">
                             <div className="size-10 rounded-full border">
                                 <img
                                     src={
-                                        message.senderId === authUser._id
+                                        message.senderId?._id === authUser._id
                                             ? authUser.profilePic || "/avatar.png"
                                             : selectedUser.profilePic || "/avatar.png"
                                     }
@@ -88,12 +76,12 @@ const ChatContainer = () => {
                             </div>
                         </div>
                         <div className="chat-header mb-1">
-                            <time className="text-xs opacity-50 ml-1">
-                                {formatMessageTime(message.createdAt)}
-                            </time>
+                            <p className="text-xs opacity-50 ml-1">
+                                {message.senderId?.fullName} at {formatMessageTime(message.createdAt)}
+                            </p>
                         </div>
                         <div
-                            className={`chat-bubble flex flex-col text-primary-content ${message.senderId === authUser._id ? "bg-primary " : "bg-base-300"}`}>
+                            className={`chat-bubble flex flex-col text-primary-content ${message.senderId?._id === authUser._id ? "bg-primary " : "bg-base-300"}`}>
                             {message.image && (
                                 <img
                                     src={message.image}

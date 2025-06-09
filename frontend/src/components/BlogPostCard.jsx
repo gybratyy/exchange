@@ -52,7 +52,7 @@ export const BlogPostCard = ({post, interact, authUser, compact = false}) => {
 
                 {post.categories && post.categories.length > 0 && (
                     <div className="mb-3 flex flex-wrap gap-2">
-                        {post.categories.slice(0, 3).map((category) => ( // Show max 3 categories
+                        {post.categories.slice(0, 3).map((category) => (
                             <span
                                 key={category._id}
                                 className="bg-indigo-100 text-indigo-700 px-2.5 py-0.5 rounded-full text-xs font-medium"

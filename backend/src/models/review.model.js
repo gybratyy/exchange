@@ -26,6 +26,7 @@ const reviewSchema = new mongoose.Schema(
             min: 1,
             max: 5,
         },
+        reports: [{type: mongoose.Schema.Types.ObjectId, ref: 'Report'}],
     },
     { timestamps: true }
 );
