@@ -21,6 +21,7 @@ export const useBookStore = create((set, get) => ({
         try {
             const res = await axiosInstance.get(`/books/${id}`);
             set({book: res.data});
+            return res.data;
         } catch (error) {
             toast.error(error.response?.data?.message || "Failed to fetch book");
             throw error;

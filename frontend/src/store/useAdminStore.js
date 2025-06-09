@@ -2,11 +2,10 @@ import {create} from "zustand";
 import {axiosInstance} from "../lib/axios.js";
 import toast from "react-hot-toast";
 
-export const useAdminStore = create((set) => ({
+export const useAdminStore = create((set, get) => ({
     reports: [],
     isLoading: false,
     error: null,
-
     fetchReports: async (status = 'active') => {
         set({isLoading: true, error: null});
         try {
@@ -36,8 +35,6 @@ export const useAdminStore = create((set) => ({
             throw error;
         }
     },
-
-
     updateReportStatus: async (reportId, status, resolutionNotes) => {
         set({isLoading: true});
         try {
@@ -47,13 +44,32 @@ export const useAdminStore = create((set) => ({
                 isLoading: false
             }));
             toast.success(`Report status updated to ${status}.`);
+            return true;
         } catch (error) {
             const errorMessage = error.response?.data?.message || "Failed to update report status.";
             toast.error(errorMessage);
             set({isLoading: false});
+            return false;
         }
     },
 
+    deleteContent: async (resourceType, resourceId) => {
+        set({isLoading: true});
+        try {
+            await axiosInstance.delete(`/admin/content/${resourceType}/${resourceId}`);
+            set(state => ({
+                reports: state.reports.filter(r => r.resourceId !== resourceId),
+                isLoading: false
+            }));
+            toast.success(`${resourceType} has been deleted.`);
+            return true;
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || `Failed to delete ${resourceType}.`;
+            toast.error(errorMessage);
+            set({isLoading: false});
+            return false;
+        }
+    }
 }));
 
 export const useReportStore = create((set) => ({
@@ -63,12 +79,12 @@ export const useReportStore = create((set) => ({
         try {
             await axiosInstance.post('/reports', reportData);
             toast.success("Report submitted successfully. Thank you!");
-            set({isSubmitting: false});
         } catch (error) {
             const errorMessage = error.response?.data?.message || "Failed to submit report.";
             toast.error(errorMessage);
-            set({isSubmitting: false});
             throw error;
+        } finally {
+            set({isSubmitting: false});
         }
     }
 }));
