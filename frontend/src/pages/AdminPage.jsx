@@ -2,16 +2,16 @@ import {useEffect, useMemo, useState} from 'react';
 import {useAdminStore} from '../store/useAdminStore';
 import {useAuthStore} from '../store/useAuthStore';
 import {Clock, Inbox, Loader, ShieldCheck, UserCheck} from 'lucide-react';
-import ReportDetailModal from '../components/ReportDetailModal'; // Import the new modal
+import ReportDetailModal from '../components/ReportDetailModal';
 
 const ReportCard = ({report, onReview}) => {
     const {claimReport, isLoading: isClaiming} = useAdminStore();
 
     const handleClaim = async (e) => {
-        e.stopPropagation(); // Prevent onReview from firing
+        e.stopPropagation();
         const claimedReport = await claimReport(report._id);
         if (claimedReport) {
-            onReview(claimedReport); // Open modal after successful claim
+            onReview(claimedReport);
         }
     };
 
@@ -59,12 +59,11 @@ const ReportCard = ({report, onReview}) => {
 const AdminPage = () => {
     const {reports, fetchReports, isLoading} = useAdminStore();
     const {authUser} = useAuthStore();
-    const [currentTab, setCurrentTab] = useState('new'); // 'new', 'mine', 'all'
+    const [currentTab, setCurrentTab] = useState('new');
     const [selectedReport, setSelectedReport] = useState(null);
 
     useEffect(() => {
-        // We always fetch all active reports, then filter on the client
-        fetchReports('active');
+        fetchReports('');
     }, [fetchReports]);
 
     const {newReports, myQueue} = useMemo(() => {
