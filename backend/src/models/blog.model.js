@@ -36,7 +36,8 @@ const blogSchema = new mongoose.Schema({
     views: {
         type: Number,
         default: 0
-    }
+    },
+    reports: [{type: mongoose.Schema.Types.ObjectId, ref: 'Report'}],
 
 
 }, {timestamps: true});

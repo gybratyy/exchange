@@ -8,47 +8,9 @@ export const initiateExchange = async (req, res) => {
         const {receiverBookId, initiatorBookId} = req.body;
         const initiatorUserId = req.user._id;
 
-        if (!receiverBookId || !initiatorBookId) {
-            return res.status(400).json({message: "Receiver book ID and initiator book ID are required."});
-        }
-
         const receiverBook = await Book.findById(receiverBookId);
-        const initiatorBook = await Book.findById(initiatorBookId);
-
-        if (!receiverBook || !initiatorBook) {
-            return res.status(404).json({message: "One or both books not found."});
-        }
-
-        if (initiatorBook.owner.toString() !== initiatorUserId.toString()) {
-            return res.status(403).json({message: "You do not own the book you are trying to offer."});
-        }
-
-        if (receiverBook.owner.toString() === initiatorUserId.toString()) {
-            return res.status(400).json({message: "You cannot initiate an exchange for your own book with yourself."});
-        }
-
-        if (receiverBook.status !== "available" || !receiverBook.isActive ||
-            initiatorBook.status !== "available" || !initiatorBook.isActive) {
-            return res.status(400).json({message: "One or both books are not available for exchange."});
-        }
-
-        const existingExchange = await Exchange.findOne({
-            $or: [
-                {
-                    initiatorBook: initiatorBookId,
-                    receiverBook: receiverBookId,
-                    status: {$in: ["pending_agreement", "agreed_pending_confirmation"]}
-                },
-                {
-                    initiatorBook: receiverBookId,
-                    receiverBook: initiatorBookId,
-                    status: {$in: ["pending_agreement", "agreed_pending_confirmation"]}
-                }
-            ]
-        });
-
-        if (existingExchange) {
-            return res.status(400).json({message: "An exchange proposal for these books already exists or is pending."});
+        if (!receiverBook) {
+            return res.status(404).json({message: "Receiver's book not found."});
         }
 
         const newExchange = new Exchange({
@@ -62,15 +24,19 @@ export const initiateExchange = async (req, res) => {
         await newExchange.save();
 
         const populatedExchange = await Exchange.findById(newExchange._id)
-            .populate("initiatorUser", "_id fullName profilePic email")
-            .populate("receiverUser", "_id fullName profilePic email")
-            .populate("initiatorBook", "_id title image author")
-            .populate("receiverBook", "_id title image author");
-
+            .populate("initiatorUser", "fullName profilePic email _id")
+            .populate("receiverUser", "fullName profilePic email _id")
+            .populate("initiatorBook", "title image author")
+            .populate("receiverBook", "title image author");
 
         const receiverSocketId = getReceiverSocketId(receiverBook.owner.toString());
         if (receiverSocketId) {
             io.to(receiverSocketId).emit("new_exchange_proposal", populatedExchange);
+            io.to(receiverSocketId).emit("notification", {
+                type: 'exchange',
+                title: `New exchange request from ${populatedExchange.initiatorUser.fullName}`,
+                user: populatedExchange.initiatorUser
+            });
         }
 
         res.status(201).json(populatedExchange);
@@ -183,6 +149,20 @@ export const updateExchangeStatus = async (req, res) => {
         }
         if (receiverSocketId) {
             io.to(receiverSocketId).emit("exchange_status_updated", populatedExchange);
+        }
+
+        const notificationRecipientId = exchange.initiatorUser.toString() === userId.toString()
+            ? exchange.receiverUser.toString()
+            : exchange.initiatorUser.toString();
+
+        const notificationRecipientSocketId = getReceiverSocketId(notificationRecipientId);
+
+        if (notificationRecipientSocketId) {
+            io.to(notificationRecipientSocketId).emit("notification", {
+                type: 'exchange_update',
+                title: `Exchange status updated to: ${status.replace(/_/g, ' ')}`,
+                user: req.user
+            });
         }
 
         res.status(200).json(populatedExchange);

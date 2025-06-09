@@ -12,6 +12,8 @@ import messageRoutes from "./routes/message.route.js";
 import bookRoutes from "./routes/book.route.js";
 import userRoutes from "./routes/user.route.js"
 import exchangeRoutes from "./routes/exchange.route.js";
+import reportRoutes from "./routes/report.route.js";
+import adminRoutes from "./routes/admin.route.js";
 import {app, server} from "./lib/socket.js";
 import blogRoutes from "./routes/blog.route.js";
 
@@ -35,6 +37,8 @@ app.use("/api/books", bookRoutes)
 app.use("/api/user", userRoutes)
 app.use("/api/blog", blogRoutes)
 app.use("/api/exchanges", exchangeRoutes)
+app.use("/api/reports", reportRoutes);
+app.use("/api/admin", adminRoutes);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
