@@ -6,7 +6,7 @@ import {useEffect} from "react";
 import {Loader} from "lucide-react";
 import {Toaster} from "react-hot-toast";
 
-// Import Pages
+import Category from "./pages/Category";
 import HomePage from "./pages/HomePage";
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
@@ -75,6 +75,7 @@ const App = () => {
                     <Route path="/catalog" element={<Catalog/>}/>
                     <Route path="/exchange" element={<ProtectedRoute><ExchangePage/></ProtectedRoute>}/>
                     <Route path="/catalog/:id" element={<BookPage/>}/>
+                    <Route path="/catalog/categories/:id" element={<Category/>}/>
                     <Route path="/preferences" element={<ProtectedRoute><Preferences/></ProtectedRoute>}/>
                     <Route path='/chat' element={<ProtectedRoute><Chat/></ProtectedRoute>}/>
                     <Route path='/blog/:id' element={<BlogPage/>}/>
@@ -91,6 +92,7 @@ const App = () => {
                     />
                 </Routes>
             </LocalizationProvider>
+            {/*  <Footer/>*/}
             <Toaster/>
         </div>
     );
