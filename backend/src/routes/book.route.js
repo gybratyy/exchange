@@ -10,7 +10,7 @@ import {
     enableBook,
     getAllBooks,
     getBookById,
-    getBooksByCategory,
+    getBooksForCategoryPage,
     getCategories,
     getMyBooks,
     getSimilarBooks,
@@ -37,7 +37,7 @@ router.get('/:bookId', getBookById);
 router.get('/:bookId/view', addView);
 router.get('/:bookId/wishlist', protectRoute, toggleWishlist);
 router.get('/:bookId/similar', getSimilarBooks);
-router.get('/category/:categoryId', getBooksByCategory);
+router.get('/category/:categoryId', getBooksForCategoryPage);
 router.post('/update/:bookId', protectRoute, updateBook);
 router.delete('/:bookId', protectRoute, deleteBook);
 

@@ -108,6 +108,7 @@ export const useBookStore = create((set, get) => ({
         try {
             const res = await axiosInstance.get("/books/categories");
             set({categories: res.data});
+            return res.data;
         } catch (error) {
             toast.error(error.response?.data?.message || "Failed to fetch books");
             throw error;
@@ -138,5 +139,19 @@ export const useBookStore = create((set, get) => ({
             throw error;
         }
     },
+    getBooksByCategory: async (categoryId) => {
+        set({isBooksLoading: true});
+        try {
+            const res = await axiosInstance.get(`/books/category/${categoryId}`);
+            set({books: res.data});
+            return res.data;
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Failed to fetch books by category");
+            throw error;
+        } finally {
+            set({isBooksLoading: false});
+        }
+    }
+
 
 }));

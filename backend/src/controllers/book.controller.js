@@ -341,3 +341,80 @@ export const toggleWishlist = async (req, res) => {
         res.status(500).json({message: "Internal Server Error"});
     }
 }
+
+export const getBooksForCategoryPage = async (req, res) => {
+    try {
+        const {categoryId} = req.params;
+
+        const categoryCounts = await Book.aggregate([
+            {$unwind: "$categories"},
+            {$group: {_id: "$categories", count: {$sum: 1}}}
+        ]);
+
+        const countsMap = categoryCounts.reduce((map, item) => {
+            map[item._id] = item.count;
+            return map;
+        }, {});
+
+        const allCategories = await Category.find({});
+
+        const selectedCategory = allCategories.find(c => c._id.toString() === categoryId);
+        if (!selectedCategory) {
+            return res.status(404).json({message: "Category not found"});
+        }
+
+        const otherCategories = allCategories
+            .filter(c => c._id.toString() !== categoryId)
+            .map(cat => ({
+                ...cat.toObject(),
+                bookCount: countsMap[cat._id.toString()] || 0
+            }));
+
+
+        const booksInSelectedCategory = await Book.find({categories: categoryId})
+            .populate('categories', 'name')
+            .populate('owner', 'fullName');
+
+
+        const categoryFrequency = {};
+        booksInSelectedCategory.forEach(book => {
+            book.categories.forEach(category => {
+                if (category._id.toString() !== categoryId) {
+                    categoryFrequency[category._id] = (categoryFrequency[category._id] || 0) + 1;
+                }
+            });
+        });
+        const sortedCoCategoryIds = Object.keys(categoryFrequency).sort((a, b) => categoryFrequency[b] - categoryFrequency[a]);
+
+        const sections = [];
+        sections.push({
+            category: selectedCategory,
+            books: booksInSelectedCategory.slice(0, 10)
+        });
+
+        for (const coCategoryId of sortedCoCategoryIds) {
+            const categoryDetails = allCategories.find(c => c._id.toString() === coCategoryId);
+            if (categoryDetails) {
+                const books = await Book.find({categories: {$all: [categoryId, coCategoryId]}})
+                    .populate('owner', 'fullName')
+                    .limit(10);
+                if (books.length > 0) {
+                    sections.push({
+                        category: categoryDetails,
+                        books: books
+                    });
+                }
+            }
+        }
+
+        res.status(200).json({
+            selectedCategory,
+            otherCategories,
+            sections
+        });
+
+    } catch (error) {
+        console.error("Error in getBooksForCategoryPage:", error);
+        res.status(500).json({message: "Server error"});
+    }
+};

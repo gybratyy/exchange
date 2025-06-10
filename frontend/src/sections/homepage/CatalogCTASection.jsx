@@ -1,5 +1,5 @@
 import {useBookStore} from "../../store/useBookStore.js";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 export const CatalogCTASection = () => {
 
@@ -49,24 +49,27 @@ const navigate = useNavigate()
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-10 md:mb-12">
 
                       {categories?.slice(0,4).map((category) => (
-                            <div
-                                key={category.name}
-                                className="relative aspect-square rounded-xl overflow-hidden group cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-105"
-                            >
-                                <img
-                                    src={category.image}
-                                    alt={category.name}
-                                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                                    onError={(e) => {
-                                        e.target.onerror = null;
-                                        e.target.src = `https://placehold.co/200x200/334155/E2E8F0?text=${encodeURIComponent(category.name)}&font=lora`;
-                                    }}
-                                />
+                          <Link to={`catalog/categories/${category._id}`} key={category._id}>
+                              <div
+                                  key={category.name}
+                                  className="relative aspect-square rounded-xl overflow-hidden group cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-105"
+                              >
+                                  <img
+                                      src={category.image}
+                                      alt={category.name}
+                                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                      onError={(e) => {
+                                          e.target.onerror = null;
+                                          e.target.src = `https://placehold.co/200x200/334155/E2E8F0?text=${encodeURIComponent(category.name)}&font=lora`;
+                                      }}
+                                  />
 
-                                <p className="absolute top-4 left-4   rounded text-white text-xs sm:text-sm md:text-base font-semibold">
-                                    {category.name}
-                                </p>
-                            </div>
+                                  <p className="absolute top-4 left-4   rounded text-white text-xs sm:text-sm md:text-base font-semibold">
+                                      {category.name}
+                                  </p>
+                              </div>
+                          </Link>
+
                         ))}
 
                 </div>
